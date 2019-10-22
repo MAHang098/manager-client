@@ -9,8 +9,8 @@
 			</el-form-item>
 			<el-form-item label="新闻大图" prop="newsImg" >
 				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" 
-				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" 
+				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
+				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccess"
 				:limit="1" :on-exceed="handleExceed" :file-list="fileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -225,10 +225,18 @@ export default {
         // },
 		getfileName(file, fileList) {
             // console.log(fileList)
-            let obj = {
-                name: fileList.name
-            }
-			this.fileList.push(obj)
+            // let obj = {
+            //     name: fileList.name
+            // }
+			// this.fileList.push(obj)
+		},
+		uploadSuccess(response, file, fileList) {
+			if(response.code == 200) {
+				let obj = {
+					name: response.data.fileName
+				}
+				this.fileList.push(obj)
+			}
 		},
 		handlePreview(file) {
 			// console.log(file);
@@ -294,7 +302,7 @@ export default {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
 					var url = this.url;
-					
+					console.log(this.fileList.name)
 					// 判断新闻内容是否为空
 					if(this.value == '') {
 						 this.$message.error('请填写新闻内容');
@@ -322,7 +330,7 @@ export default {
                         newsId: this.detailsId
 					}
 					
-					this.Axios.post(url + "/admin/offcial/addnews",params)
+					this.Axios.post(url + "/admin/offcial/updatenews",params)
 						.then(res => {
 							if(res.data.code == 200) {
 								this.$notify({

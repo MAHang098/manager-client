@@ -9,22 +9,12 @@
 				</div>
 			</el-form-item>
 			<el-form-item label="品牌图" prop="brandImg">
-				<!--<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" 
-				:before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :limit="1" :on-exceed="handleExceed" 
-				:file-list="fileList" :before-upload="beforeAvatarUpload">
-					<el-button size="small" type="primary">点击上传</el-button>
-					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-				</el-upload>-->
-				<!--<el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-change="handleChange" :file-list="fileList">
-					<el-button size="small" type="primary">点击上传</el-button>
-					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-				</el-upload>-->
+				
 				<el-upload
-				action="https://jsonplaceholder.typicode.com/posts/"
+				action="http://www.zhongjubang.com/test/upload"
 				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
 				:on-preview="handlePreview"
-				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :limit="1" 
+				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccess" :limit="1" 
 				:on-exceed="handleExceed" :file-list="fileList" :before-upload="beforeAvatarUpload">
 				<i class="el-icon-plus"></i>
 				</el-upload>
@@ -34,9 +24,9 @@
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
 				<el-upload class="upload-demo"  accept="image/jpeg,image/jpg,image/png" 
-				action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" 
+				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
 				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getlogfileName" 
-				:multiple="false" :limit="1" :on-exceed="handleExceed" :file-list="logfileList"
+				:multiple="false" :on-success="uploadSuccessLog" :limit="1" :on-exceed="handleExceed" :file-list="logfileList"
 				:before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -211,6 +201,16 @@ export default {
         getlogfileName(file, fileList) {
             this.logfileList.name = fileList.name
         },
+		uploadSuccess(response, file, fileList) {
+			if(response.code == 200) {
+				this.fileList.name = response.data.fileName;
+			}
+		},
+		uploadSuccessLog(response, file, logfileList) {
+			if(response.code == 200) {
+				this.logfileList.name = response.data.fileName;
+			}
+		},
 		handleChange(file, fileList) {
         	this.fileList = fileList.slice(-3);
       	},
@@ -262,7 +262,8 @@ export default {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
 					var url = this.url;
-					
+					console.log(this.logfileList.name)
+					console.log(this.fileList.name)
 					// 判断新闻内容是否为空
 					if(this.value == '') {
 						 this.$message.error('请填写品牌详情');
@@ -287,7 +288,7 @@ export default {
 						sn: this.temp.sn
                     }
 					this.dialogFormVisible = true;
-					this.Axios.post(url + "/admin/applet/addbrand",Qs.stringify(params))
+					this.Axios.post(url + "/admin/applet/addbrand",params)
                         .then(res => {
                             console.log(res.data.message);
                             if (res.status == 200) {

@@ -12,7 +12,7 @@
 				<el-table-column prop="userId" label="用户id" width="140"></el-table-column>
 				<el-table-column prop="tpRecommendId" label="推荐订单id" width="140"></el-table-column>
 				<el-table-column prop="intention" label="客户欲购买的产品" width="140"></el-table-column>
-                <el-table-column label="Actions" align="center" width="240" class-name="small-padding fixed-width">
+                <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
 					<template slot-scope="{row}">
 						<el-button type="primary" size="mini" @click="handleUpdate(row)">修改</el-button>
 					</template>
@@ -29,7 +29,11 @@
 			<el-dialog :visible.sync="dialogFormVisible">
 				<el-form ref="dataForm" label-position="left" :model="temp" label-width="100px" style="width: 400px; margin-left:50px;">
 					<el-form-item label="状态" prop="title">
-						<el-input v-model="temp.state" />
+						<!-- <el-input v-model="temp.state" /> -->
+						<el-select v-model="temp.state" placeholder="请选择">
+							<el-option v-for="item in states" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
 					</el-form-item>
 					<el-form-item label="加多少钱钱" prop="title">
 						<el-input v-model="temp.cost" />
@@ -63,6 +67,32 @@ export default {
 	name: "Recommand",
 	data() {
 		return {
+			states: [
+				{
+					value: '1',
+					label: '待处理'
+				},
+				{
+					value: '2',
+					label: '处理中'
+				},
+				{
+					value: '3',
+					label: '有需求'
+				},
+				{
+					value: '4',
+					label: '无需求'
+				},
+				{
+					value: '5',
+					label: '签约成功'
+				},
+				{
+					value: '6',
+					label: '签约失败'
+				}
+			],
 			newsType: "applet_news",
 			pageIndex: 1,
 			pageSize: 10,
@@ -176,6 +206,14 @@ export default {
 						// this.tableData = tableData;
                         // this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
                         console.log('上传成功')
+						this.dialogFormVisible = false
+                        this.$notify({
+                            title: '成功',
+                            message: '更新成功',
+                            type: 'success',
+                            duration: 2000
+                        })
+						getInfo()
 
 					} else {
 						console.log(res.code);

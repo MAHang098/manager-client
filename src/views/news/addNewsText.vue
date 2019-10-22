@@ -9,8 +9,8 @@
 			</el-form-item>
 			<el-form-item label="新闻大图" prop="newsImg" >
 				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" 
-				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" 
+				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
+				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false"  :on-success="uploadSuccess"
 				:limit="1" :on-exceed="handleExceed" :file-list="fileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -185,8 +185,13 @@ export default {
 	},
 	methods: {
 		getfileName(file, fileList) {
-			console.log(fileList.name);
-			this.fileList.name = fileList.name
+			
+			// this.fileList.name = fileList.name
+		},
+		uploadSuccess(response, file, fileList) {
+			if(response.code == 200) {
+				this.fileList.name = response.data.fileName;
+			}
 		},
 		handlePreview(file) {
 			console.log(file);
@@ -205,6 +210,7 @@ export default {
 				this.$message.error('上传图片格式不对!')
 				return
 			}
+			// console.log(file);
 		},
 		init() {
 			// dynamic load tinymce from cdn
@@ -252,8 +258,8 @@ export default {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
 					var url = this.url;
-					
-					// 判断新闻内容是否为空
+					console.log(this.fileList.name)
+					// 新闻内容和新闻链接二选一
 					if(this.value == '' && this.temp.url == '') {
 						 this.$message.error('请填写新闻内容或者新闻地址');
 						 return;
@@ -262,8 +268,10 @@ export default {
 						this.$message.error('请上传新闻大图');
 						return;
 					}
-					if( this.regRulers(this.temp.url) == false) {
-						return;
+					if(this.temp.url != '') {
+						if( this.regRulers(this.temp.url) == false) {
+							return;
+						}
 					}
 					this.dialogFormVisible = true;
 					let params = {

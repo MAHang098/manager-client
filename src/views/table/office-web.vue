@@ -28,14 +28,7 @@
 				<el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
 					<template slot-scope="{row}">
 						<el-button type="primary" size="mini" @click="handleUpdate(row)" >编辑</el-button>
-						<el-button v-if="row.status!='deleted'" size="mini" type="danger" icon="el-icon-delete"  @click="centerDialogVisible = true">删除</el-button>
-						<el-dialog title="提示" :visible.sync="centerDialogVisible" width="20%" center>
-							<span>确定删除这条数据吗？</span>
-							<span slot="footer" class="dialog-footer">
-								<el-button @click="centerDialogVisible = false">取 消</el-button>
-								<el-button type="primary" @click="delNews(row)">确 定</el-button>
-							</span>
-						</el-dialog>
+						<el-button v-if="row.status!='deleted'" size="mini" type="danger" icon="el-icon-delete"  @click="delNews(row)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -227,70 +220,56 @@ export default {
 			});
 		},
 		delNews(row) {
-			const url = "http://www.zhongjubang.com/test/";
-			this.Axios.post(url + "/admin/offcial/delnews", {
-				newsId: row.newsId
-			}).then(res => {
-				if (res.status == 200) {
-					this.$message.success('删除成功');
-					this.centerDialogVisible = false
-					this.getInfo();
-				} else {
-					console.log(res.code);
-					if (res.code == 400) {
-						console.log("请求异常");
-					} else if (res.code == 401) {
-						console.log("参数为空");
-					} else if (res.code == 402) {
-						console.log("对象已存在");
-					} else if (res.code == 403) {
-						console.log("电话号码已存在");
-					} else if (res.code == 404) {
-						console.log("对象不存在(查询对象时用)");
-					} else if (res.code == 405) {
-						console.log("短信、邮件、消息发送失败");
-					} else if (res.code == 406) {
-						console.log("预期相反最终结果");
-					} else if (res.code == 407) {
-						console.log("验证、认证失败");
-					} else if (res.code == 408) {
-						console.log("参数错误");
-					} else if (res.code == 411) {
-						console.log("数据为空||结果为空||对象为空 (查询结果数据时用)");
-					} else if (res.code == 421) {
-						console.log("token过期或者无效");
-					} else if (res.code == 422) {
-						console.log("系统错误");
+			this.$confirm("此操作将永久删除, 是否继续?", "提示", {
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+				type: "warning"
+			}).then(() => {
+				const url = "http://www.zhongjubang.com/test/";
+
+				this.Axios.post(url + "/admin/offcial/delnews", {
+					newsId: row.newsId
+				}).then(res => {
+					if (res.status == 200) {
+						this.$message.success('删除成功');
+						this.centerDialogVisible = false
+						this.getInfo();
+					} else {
+						console.log(res.code);
+						if (res.code == 400) {
+							console.log("请求异常");
+						} else if (res.code == 401) {
+							console.log("参数为空");
+						} else if (res.code == 402) {
+							console.log("对象已存在");
+						} else if (res.code == 403) {
+							console.log("电话号码已存在");
+						} else if (res.code == 404) {
+							console.log("对象不存在(查询对象时用)");
+						} else if (res.code == 405) {
+							console.log("短信、邮件、消息发送失败");
+						} else if (res.code == 406) {
+							console.log("预期相反最终结果");
+						} else if (res.code == 407) {
+							console.log("验证、认证失败");
+						} else if (res.code == 408) {
+							console.log("参数错误");
+						} else if (res.code == 411) {
+							console.log("数据为空||结果为空||对象为空 (查询结果数据时用)");
+						} else if (res.code == 421) {
+							console.log("token过期或者无效");
+						} else if (res.code == 422) {
+							console.log("系统错误");
+						}
 					}
-				}
-			});
+				});
+			})
 		},
 		handleUpdate(row) {
 			this.$router.push({
 		        path:'../../table/editNews',
 		        query:{nameId:row.newsId}
 	      	})
-		},
-		updateData() {
-			this.$refs['dataForm'].validate((valid) => {
-				if (valid) {
-					const tempData = Object.assign({}, this.temp2)
-					const url = 'http://www.zhongjubang.com/test/'
-					this.Axios.post(url + "/admin/applet/updatenews", {
-						newsContent: this.temp2.newsContent,
-						newsImg: this.temp2.newsImg,
-						newsQuote: this.temp2.newsQuote,
-						newsTitle: this.temp2.newsTitle,
-						newsTypeId: this.temp2.newsTypeId,
-						url: this.temp2.url
-					}).then(res => {
-						if (res.status == 200) {
-							console.log("上传成功");
-						}
-					});
-				}
-			})
-
 		},
 		gotoCreate() {
 			this.$router.replace('/table/inline-edit-table')
