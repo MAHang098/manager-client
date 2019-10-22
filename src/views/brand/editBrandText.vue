@@ -10,17 +10,28 @@
 			</el-form-item>
 			<el-form-item label="品牌图" prop="brandImg">
 				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				 action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" 
+				 action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="uploadSuccess"
 				 :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :limit="1" :on-exceed="handleExceed" 
 				 :file-list="fileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 				</el-upload>
+				<!--<el-upload
+				action="http://www.zhongjubang.com/test/upload"
+				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
+				:on-preview="handlePreview"
+				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccess" :limit="1" 
+				:on-exceed="handleExceed" :file-list="fileList" :before-upload="beforeAvatarUpload">
+				<i class="el-icon-plus"></i>
+				</el-upload>
+				<el-dialog :visible.sync="dialogVisible">
+				<img width="100%" :src="dialogImageUrl" alt="">
+				</el-dialog>-->
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
 				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" 
-				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getlogfileName" 
+				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
+				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getlogfileName"  :on-success="uploadSuccessLog"
 				:multiple="false" :limit="1" :on-exceed="handleExceed" :file-list="logfileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -144,7 +155,8 @@ export default {
 				brandRoyalty:  [{ required: true, message: '请输入品牌分成', trigger: 'blur' }],
 				brandTypeId:  [{ required: true, message: '请输入品牌类型id', trigger: 'blur' }],
 				sn:  [{ required: true, message: '请输入排序序号', trigger: 'blur' }]
-			}
+			},
+			
 		};
 	},
 	created() {
@@ -163,7 +175,6 @@ export default {
 	},
 	watch: {
 		value(val) {
-			// console.log(val);
 			if (!this.hasChange && this.hasInit) {
 				this.$nextTick(() =>
 					window.tinymce.get(this.tinymceId).setContent(val || "")
@@ -173,12 +184,37 @@ export default {
 	},
 	mounted() {
 		this.init();
-		this.brandId = this.$route.query.brandId;
 	},
 	activated() {
 		if (window.tinymce) {
 			this.initTinymce();
 		}
+		this.fileList = [];
+		this.logfileList = [];
+		let detailData = this.$route.params.data;
+		this.brandId = detailData.id;
+		this.temp = {
+			brandIcon: detailData.brandIcon,
+			brandImg: detailData.brandImg,
+			brandDetails: detailData.brandDetails,
+			brandLike: detailData.brandLike,
+			brandName: detailData.brandName,
+			brandRoyalty: detailData.brandRoyalty,
+			brandTypeId: detailData.brandTypeId,
+			sn: detailData.sn
+		}
+		// 品牌图
+		let fileObj = {
+			name: detailData.brandImg.split("/").pop(),
+			url: detailData.brandImg
+		}
+		//品牌图标
+		let logObj = {
+			name: detailData.brandIcon.split("/").pop(),
+			url: detailData.brandIcon
+		}
+		this.fileList.push(fileObj);
+		this.logfileList.push(logObj);
 	},
 	deactivated() {
 		this.destroyTinymce();
@@ -197,21 +233,48 @@ export default {
 		},
         // 品牌图
 		getfileName(file, fileList) {
-			this.fileList.name = fileList.name
+			// this.fileList.name = fileList.name
 		},
         // 品牌图标
         getlogfileName(file, fileList) {
-            this.logfileList.name = fileList.name
+            // this.logfileList.name = fileList.name
         },
+		// 品牌图上传成功
+		uploadSuccess(response, file, fileList) {
+			console.log(response)
+			if(response.code == 200) {
+				let obj = {
+					name: response.data.fileName
+				}
+				this.fileList.push(obj)
+			}
+		},
+		// 品牌图标上传成功
+		uploadSuccessLog(response, file, fileList) {
+			if(response.code == 200) {
+				let obj = {
+					name: response.data.fileName
+				}
+				this.logfileList.push(obj)
+			}
+		},
 		handleChange(file, fileList) {
         	this.fileList = fileList.slice(-3);
       	},
+		// 移除品牌图
 		handleRemove(file, fileList) {
-			// console.log(fileList);
-			console.log(file)
+			this.fileList.forEach((item, index) => {
+				if(file.name == this.fileList[index].name && file.url == this.fileList[index].url) {
+					this.fileList.splice(index, 1);
+				}
+			})
+		},
+		// 移除品牌图标
+		handleRemoveLog(file, fileList) {
+			this.logfileList = [];
 		},
 		handlePreview(file) {
-			console.log(file);
+			// console.log(file);
 		},
 		handleExceed(files, fileList) {
 			// this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -239,9 +302,9 @@ export default {
 			});
            
 		},
-		handleRemove(file, fileList) {
-			console.log(file, fileList);
-		},
+		// handleRemove(file, fileList) {
+		// 	console.log(file, fileList);
+		// },
 		handlePictureCardPreview(file) {
 			console.log(file.name);
 			// console.log(file.url.name)
@@ -249,11 +312,6 @@ export default {
 			this.dialogVisible = true;
 		},
 		updateData() {
-          
-            // this.temp = {};
-            // this.value = '';
-            // this.fileList = [];
-            // this.logfileList = [];
 			this.$refs["dataForm"].validate(valid => {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
@@ -264,18 +322,18 @@ export default {
 						 this.$message.error('请填写品牌详情');
 						 return;
 					}
-					if(this.fileList.name == '' || this.fileList.name == undefined || this.fileList.name == null ) {
+					if(this.fileList.length == 0) {
 						this.$message.error('请上传品牌图');
 						return;
 					}
-					if(this.logfileList.name == '' || this.logfileList.name == undefined || this.logfileList.name == null ) {
+					if(this.logfileList.length == 0) {
 						this.$message.error('请上传品牌图标');
 						return;
 					}
                     var params = {
                         brandDetails: this.value,
-                        brandImg: this.logfileList.name,
-						brandIcon: this.fileList.name,
+                        brandImg: this.logfileList[0].name,
+						brandIcon: this.fileList[0].name,
 						brandLike: this.temp.brandLike,
 						brandName: this.temp.brandName,
 						brandRoyalty: this.temp.brandRoyalty,
@@ -286,8 +344,7 @@ export default {
 					this.dialogFormVisible = true;
 					this.Axios.post(url + "/admin/applet/updatebrand",params)
                         .then(res => {
-                            console.log(res.data.message);
-                            if (res.status == 200) {
+                            if (res.data.code == 200) {
                                 this.$message.success(res.data.message);
 									this.$notify({
 						              	title: 'Success',

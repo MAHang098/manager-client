@@ -3,7 +3,7 @@
 		<div class="filter-container">
 			<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addBrand">添加品牌</el-button>
 			<!--渲染数据 start-->
-			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading" height="680">
+			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading" >
 				<el-table-column prop="id" label="品牌id" width="80"></el-table-column>
 				<!--<el-table-column prop="brandTypeId" label="品牌类型id" width="100"></el-table-column>-->
 				
@@ -28,6 +28,7 @@
 				<el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
 					<template slot-scope="{row}">
 						<el-button type="primary" size="mini" @click="editBrand(row)">编辑</el-button>
+						<el-button type="danger" size="mini" @click="deleteBrand(row.id)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -71,6 +72,9 @@ export default {
 
 		};
 	},
+	created() {
+
+	},
 	// 获取新闻数据
 	mounted() {
 		this.getInfo();
@@ -90,10 +94,12 @@ export default {
 		// 获取品牌列表
 		getInfo() {
 			const url = "https://www.zhongjubang.com/test/";
-			var parmas = {
+			let parmas = {
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize,
 			}
+			this.loading = true;
+			console.log(111)
 			this.Axios.post(url + "/admin/applet/getbrandlist", parmas)
 				.then(res => {
 
@@ -135,14 +141,64 @@ export default {
 		getInput() {
 			const item = this.textarea2;
 		},
+		// 删除整条品牌数据
+		deleteBrand(id) {
+			this.$confirm("此操作将永久删除, 是否继续?", "提示", {
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+				type: "warning"
+			}).then(() => {
+				const url = "http://www.zhongjubang.com/test/";
+
+				this.Axios.post(url + "/admin/applet/delbrand", {
+					brandId: id
+				}).then(res => {
+					if (res.data.code == 200) {
+						this.$message.success('删除成功');
+						this.pageIndex = 1;
+						this.getInfo();
+						this.currentPage2 = 1;
+					} else {
+						console.log(res.code);
+						// if (res.code == 400) {
+						// 	console.log("请求异常");
+						// } else if (res.code == 401) {
+						// 	console.log("参数为空");
+						// } else if (res.code == 402) {
+						// 	console.log("对象已存在");
+						// } else if (res.code == 403) {
+						// 	console.log("电话号码已存在");
+						// } else if (res.code == 404) {
+						// 	console.log("对象不存在(查询对象时用)");
+						// } else if (res.code == 405) {
+						// 	console.log("短信、邮件、消息发送失败");
+						// } else if (res.code == 406) {
+						// 	console.log("预期相反最终结果");
+						// } else if (res.code == 407) {
+						// 	console.log("验证、认证失败");
+						// } else if (res.code == 408) {
+						// 	console.log("参数错误");
+						// } else if (res.code == 411) {
+						// 	console.log("数据为空||结果为空||对象为空 (查询结果数据时用)");
+						// } else if (res.code == 421) {
+						// 	console.log("token过期或者无效");
+						// } else if (res.code == 422) {
+						// 	console.log("系统错误");
+						// }
+					}
+				}).catch(() => {
+					// 取消删除操作	
+				})
+			})
+		},
 		// 添加品牌
 		addBrand() {
 			this.$router.push('./addBrand')
 		},
 		editBrand(row) {
 			this.$router.push({
-		        path:'./editBrand',
-		        query:{brandId:row.id}
+	        	name:'editBrand',
+	        	params:{data:row}
 	      	})
 		}
 	}

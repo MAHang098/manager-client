@@ -36,7 +36,7 @@
 				<el-input v-model="temp.url" />
 			</el-form-item>
 		</el-form>
-		<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="createData">添加新闻</el-button>
+		<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="createData">编辑新闻</el-button>
 	</div>
 </template>
 
@@ -144,7 +144,7 @@ export default {
 				newsTypeId:  [{ required: true, message: '请输入新闻类型', trigger: 'blur' }],
 				url:  [{ required: true, message: '请输入新闻跳转地址', trigger: 'blur' }]
 			},
-            detailsId: ''
+            detailsId: ''   // 新闻详情id
 		};
 	},
     beforeCreate() {
@@ -152,7 +152,7 @@ export default {
     },
 	created() {
 		this.dialogFormVisible = true;
-        this.detailsId =  this.$route.query.newsId;
+        
 	},
     
 	computed: {
@@ -176,13 +176,29 @@ export default {
 		}
 	},
 	mounted() {
-		
-        // this.detailNews(this.detailsId);
-        this.Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-        this.Axios.post(this.url + '/admin/applet/getnewsdetailbyid', {newId: this.detailsId})
-                .then(res => {
-                    console.log(res)
-                    if(res.data.code == 200) {
+		this.init();
+	},
+	activated() {
+		if (window.tinymce) {
+			this.initTinymce();
+		}
+        this.detailsId =  this.$route.query.newsId;
+		this.detailNews(this.detailsId);
+		this.fileList = [];
+	},
+	deactivated() {
+		this.destroyTinymce();
+	},
+	destroyed() {
+		this.destroyTinymce();
+	},
+	methods: {
+        // 获取新闻详情
+        // 获取新闻详情
+        detailNews(id) {
+			this.Axios.post(this.url + '/admin/applet/getnewsdetailbyid', {newId: id})
+				.then(res => {
+					if(res.data.code == 200) {
 						var data = res.data.data;
 						// console.log(res.data.data)
 						this.temp = {
@@ -193,36 +209,16 @@ export default {
 							newsTypeId: res.data.data.newsTypeId.toString(),
 							url: res.data.data.url
 						};
-						var imageUrl = data.newsImg;
-						var index = imageUrl.lastIndexOf("/");
-						var obj = {
+					
+						let obj = {
 							name: res.data.data.newsImg.split("/").pop(),
 							url: res.data.data.newsImg
 						}
 						this.fileList.push(obj)
-                        
+						
 					}
-                })
-                this.init();
-	},
-	activated() {
-		if (window.tinymce) {
-			this.initTinymce();
-		}
-        
-	},
-	deactivated() {
-		this.destroyTinymce();
-	},
-	destroyed() {
-		this.destroyTinymce();
-	},
-	methods: {
-        // 获取新闻详情
-        // detailNews(id) {
-        //     // console.log(id)
-            
-        // },
+				})
+        },
 		getfileName(file, fileList) {
             // console.log(fileList)
             // let obj = {
@@ -303,21 +299,18 @@ export default {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
 					var url = this.url;
 					console.log(this.fileList.name)
-					// 判断新闻内容是否为空
-					if(this.value == '') {
-						 this.$message.error('请填写新闻内容');
+					if(this.value == '' && this.temp.url == '') {
+						 this.$message.error('请填写新闻内容或者新闻地址');
 						 return;
 					}
-                    if(this.fileList.length == 0) {
+					 if(this.fileList.length == 0) {
                         this.$message.error('请上传新闻大图');
                         return;
                     }
-					// if(this.fileList.name == '' || this.fileList.name == undefined || this.fileList.name == null ) {
-					// 	this.$message.error('请上传新闻大图');
-					// 	return;
-					// }
-					if( this.regRulers(this.temp.url) == false) {
-						return;
+					if(this.temp.url != '') {
+						if( this.regRulers(this.temp.url) == false) {
+							return;
+						}
 					}
 					this.dialogFormVisible = true;
 					let params = {

@@ -19,7 +19,10 @@
 				<!-- <el-table-column prop="url" label="跳转地址" width="220"></el-table-column> -->
 				<el-table-column label="新闻地址">
 					<template slot-scope="scope">
-						<a  :href="scope.row.url"  target="_blank" class="buttonText" >
+						<a v-if="scope.row.url == ''" :href="scope.row.url"  target="_blank" class="buttonText" >
+							{{scope.row.url}}
+						</a>
+						<a v-else :href="scope.row.url"  target="_blank" class="buttonText" >
 							{{(scope.row.url.split('//'))[0] + '//' +  (scope.row.url.split('/'))[2] }}
 						</a>
 					</template>
@@ -39,7 +42,6 @@
 				</el-pagination>
 			</div>
 			<!--分页 end-->
-			
 		</div>
 	</div>
 </template>
@@ -62,7 +64,7 @@ export default {
 	name: "officeWeb",
 	data() {
 		return {
-			newsType: "applet_news",
+			newsType: "official_news",
 			pageIndex: 1,
 			pageSize: 10,
 			search: "",
@@ -105,10 +107,14 @@ export default {
 
 		};
 	},
+	// activated() {
+	// 	this.getInfo();
+	// },
+	
 	// 获取新闻数据
 	mounted() {
-		this.getInfo();
 		this.getInput();
+		this.getInfo();
 	},
 	methods: {
 		// 修改每页条数
@@ -123,12 +129,13 @@ export default {
 		},
 		getInfo() {
 			const url = "https://www.zhongjubang.com/test/";
-			var parmas = {
+			let parmas = {
 				newsType: this.newsType,
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize,
 				search: this.search
 			}
+			this.loading = true;
 			this.Axios.post(url + "/controller/offcialweb/getoffcialwebnews", parmas)
 				.then(res => {
 					if (res.status == 200) {
@@ -168,57 +175,38 @@ export default {
 		},
 		getInput() {
 			const item = this.textarea2;
+			
 		},
-		resetTemp() {
-			this.temp = {
-				newsContent: "",
-				newsImg: "",
-				newsQuote: "",
-				newsTitle: "",
-				newsTypeId: "",
-				url: ""
-			};
-		},
-		resetTemp2() {
-			this.temp2 = {
-				newsId: "",
-				newsContent: "",
-				newsImg: "",
-				newsQuote: "",
-				newsTitle: "",
-				newsTypeId: "",
-				url: ""
-			};
-		},
-		handleCreate() {
-			this.resetTemp();
-			this.dialogStatus = "create";
-			this.dialogFormVisible = true;
-			this.$nextTick(() => {
-				this.$refs["dataForm"].clearValidate();
-			});
-		},
-		createData() {
-			this.$refs["dataForm"].validate(valid => {
-				if (valid) {
-					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-					const url = "http://www.zhongjubang.com/test/";
-
-					this.Axios.post(url + "/admin/offcial/addnews", {
-						newsContent: this.temp.newsContent,
-						newsImg: this.temp.newsImg,
-						newsQuote: this.temp.newsQuote,
-						newsTitle: this.temp.newsTitle,
-						newsTypeId: this.temp.newsTypeId,
-						url: this.temp.url
-					}).then(res => {
-						if (res.status == 200) {
-							console.log("上传成功");
-						}
-					});
-				}
-			});
-		},
+		// resetTemp() {
+		// 	this.temp = {
+		// 		newsContent: "",
+		// 		newsImg: "",
+		// 		newsQuote: "",
+		// 		newsTitle: "",
+		// 		newsTypeId: "",
+		// 		url: ""
+		// 	};
+		// },
+		// resetTemp2() {
+		// 	this.temp2 = {
+		// 		newsId: "",
+		// 		newsContent: "",
+		// 		newsImg: "",
+		// 		newsQuote: "",
+		// 		newsTitle: "",
+		// 		newsTypeId: "",
+		// 		url: ""
+		// 	};
+		// },
+		// handleCreate() {
+		// 	this.resetTemp();
+		// 	this.dialogStatus = "create";
+		// 	this.dialogFormVisible = true;
+		// 	this.$nextTick(() => {
+		// 		this.$refs["dataForm"].clearValidate();
+		// 	});
+		// },
+		// 删除数据
 		delNews(row) {
 			this.$confirm("此操作将永久删除, 是否继续?", "提示", {
 				confirmButtonText: "确定",
@@ -233,7 +221,9 @@ export default {
 					if (res.status == 200) {
 						this.$message.success('删除成功');
 						this.centerDialogVisible = false
+						this.pageIndex = 1;
 						this.getInfo();
+						this.currentPage2 = 1;
 					} else {
 						console.log(res.code);
 						if (res.code == 400) {
@@ -270,12 +260,20 @@ export default {
 		        path:'../../table/editNews',
 		        query:{nameId:row.newsId}
 	      	})
+	// 		this.$router.push({
+	//         	name:'editBrand',
+	//         	params:{data:row}
+	//       	})
 		},
 		gotoCreate() {
 			this.$router.replace('/table/inline-edit-table')
 		},
 		offcialAddNews() {
-			this.$router.replace('../../table/addNews');
+			// this.$router.replace('../../table/addNews');
+			this.$router.push({
+		        path:'/table/addNews',
+		//         query:{newsType: '1'}
+	      	})
 		}
 	}
 };

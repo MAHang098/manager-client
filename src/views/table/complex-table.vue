@@ -42,7 +42,6 @@
 				</el-pagination>
 			</div>
 			<!--分页 end-->
-			
 		</div>
 	</div>
 </template>
@@ -191,7 +190,9 @@ export default {
 					if (res.status == 200) {
 						this.$message.success('删除成功');
 						this.centerDialogVisible = false
+						this.pageIndex = 1;
 						this.getInfo();
+						this.currentPage2 = 1;
 					} else {
 						console.log(res.code);
 						if (res.code == 400) {
@@ -256,7 +257,11 @@ export default {
 			this.$router.replace('/table/inline-edit-table')
 		},
 		addNews() {
-			this.$router.replace('/table/addNews');
+			// this.$router.replace('/table/addNews');
+			this.$router.push({
+		        path:'/table/addNews',
+		//         query:{newsType: '2'}
+	      	})
 		}
 	}
 };

@@ -59,7 +59,7 @@ const tableRouter = {
     //   name: 'addNews',
     //   meta: { title: '添加新闻' }
     // },
-    // 编辑新闻
+    // 小程序编辑新闻
     {
       path: 'editNews',
       component: () => import('@/views/news/editNews'),
@@ -88,6 +88,8 @@ const tableRouter = {
       meta: { title: '编辑新闻富文本' },
       hidden: true
     },
+
+
   ]
 }
 export default tableRouter

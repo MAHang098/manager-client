@@ -176,6 +176,7 @@ export default {
 		if (window.tinymce) {
 			this.initTinymce();
 		}
+		this.temp.newsTypeId = this.$route.query.newsType;
 	},
 	deactivated() {
 		this.destroyTinymce();
@@ -223,10 +224,11 @@ export default {
 			});
 		},
 		handleRemove(file, fileList) {
-			console.log(file, fileList);
+			// console.log(file, fileList);
+			this.fileList = [];
 		},
 		handlePictureCardPreview(file) {
-			console.log(file.name);
+			// console.log(file.name);
 			// console.log(file.url.name)
 			this.dialogImageUrl = file.url;
 			this.dialogVisible = true;
