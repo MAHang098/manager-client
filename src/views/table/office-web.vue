@@ -1,6 +1,12 @@
 <template>
 	<div class="app-container">
 		<div class="filter-container">
+			<!-- 搜索框 start -->
+			<div class="demo-input-size">
+				<el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchInput"  @keyup.enter.native="handleClick" clearable class="elInput"></el-input>
+				<el-button  style="margin-left: 10px;" type="primary"  icon="el-icon-search"  @click="handleClick">搜索</el-button>
+			</div>
+			<!-- 搜索框 end -->
 			<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addNews">添加新闻</el-button>
 			
 			<!--渲染数据 start-->
@@ -68,6 +74,7 @@ export default {
 			pageIndex: 1,
 			pageSize: 10,
 			search: "",
+			searchInput: '',
 			tableData: [],
 			loading: true,
 			centerDialogVisible: false,
@@ -113,6 +120,11 @@ export default {
 		this.getInfo();
 	},
 	methods: {
+		// 键盘回车事件/搜索
+		handleClick() {
+			this.search = this.searchInput;
+			this.getInfo();
+		},
 		// 修改每页条数
 		handleSizeChange(val) {
 			// console.log(`每页 ${val} 条`);
@@ -176,7 +188,6 @@ export default {
 		},
 		getInput() {
 			const item = this.textarea2;
-			console.log(item);
 		},
 		delNews(row) {
 			this.$confirm("此操作将永久删除, 是否继续?", "提示", {
@@ -246,5 +257,9 @@ export default {
 <style>
 	.block {
 		margin-top: 20px;
+	}
+	.elInput {
+		width: 160px;
+		margin-bottom: 10px;
 	}
 </style>

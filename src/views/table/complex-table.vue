@@ -1,8 +1,14 @@
 <template>
 	<div class="app-container">
 		<div class="filter-container">
+			<!-- 搜索框 start -->
+			<div class="demo-input-size">
+				<el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchInput"  @keyup.enter.native="handleClick" clearable class="elInput"></el-input>
+				<el-button  style="margin-left: 10px;" type="primary"  icon="el-icon-search"  @click="handleClick">搜索</el-button>
+			</div>
+			<!-- 搜索框 end -->
+
 			<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addNews">添加新闻</el-button>
-			
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
 				<el-table-column prop="newsId" label="ID" width="60"></el-table-column>
@@ -11,7 +17,11 @@
 				<el-table-column prop="newsImg" label="新闻大图" width="200">
 					<!-- 显示图片 -->
 					<template scope="scope">
-						<img :src="scope.row.newsImg" width="180" height="80" class="head_pic" />
+						<!-- <img :src="scope.row.newsImg" width="180" height="80" class="head_pic" /> -->
+						<div class="demo-image__preview">
+
+						<el-image style="width: 100px; height: 100px" :src="scope.row.newsImg" :preview-src-list="scope.row.newsImg"></el-image>
+						</div>
 					</template>
 				</el-table-column>
 				<el-table-column prop="newsQuote" label="新闻简介" ></el-table-column>
@@ -64,6 +74,7 @@ export default {
 	name: "complex-table",
 	data() {
 		return {
+			searchInput: '',
 			newsType: "applet_news",
 			pageIndex: 1,
 			pageSize: 10,
@@ -112,6 +123,12 @@ export default {
 		this.getInput();
 	},
 	methods: {
+		// 键盘回车事件/搜索
+		handleClick() {
+			this.search = this.input1;
+			this.getInfo();
+		},
+		
 		// 修改每页条数
 		handleSizeChange(val) {
 			// console.log(`每页 ${val} 条`);
@@ -138,9 +155,7 @@ export default {
 					if (res.status == 200) {
 						this.loading = false;
 						const tableData = res.data.data.dataList;
-						//   console.log(tableData);
 						this.tableData = tableData;
-						//   console.log(tableData);
 						this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
 					} else {
 						console.log(res.code);
@@ -245,5 +260,9 @@ export default {
 <style>
 	.block {
 		margin-top: 20px;
+	}
+	.elInput {
+		width: 160px;
+		margin-bottom: 10px;
 	}
 </style>

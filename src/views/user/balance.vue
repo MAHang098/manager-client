@@ -3,9 +3,11 @@
 		<div class="filter-container">
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
-				<el-table-column prop="id" label="ID"></el-table-column>
-				<el-table-column prop="balanceLog" label="用户日志" ></el-table-column>
-				<el-table-column prop="balanceValue" label="增加值" ></el-table-column>
+				<el-table-column prop="id" label="日志id"></el-table-column>
+				<el-table-column prop="nickName" label="用户昵称" ></el-table-column>
+				<el-table-column prop="phone" label="手机号" ></el-table-column>
+				<el-table-column prop="balanceLog" label="日志" ></el-table-column>
+				<el-table-column prop="balanceValue" label="日志值" ></el-table-column>
 			</el-table>
 
 			<!--分页 start-->

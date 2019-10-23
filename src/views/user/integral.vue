@@ -3,13 +3,11 @@
 		<div class="filter-container">
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
-				<el-table-column prop="id" label="ID" width="80"></el-table-column>
-				<el-table-column prop="integralLog" label="用户日志明细" width="340"></el-table-column>
-				<el-table-column prop="integralValue" label="增加多少" min-width="20%"></el-table-column>
-				<!-- <el-table-column prop="state" label="状态" width="220"></el-table-column> -->
-				<el-table-column prop="createBy" label="创建人" width="220"></el-table-column>
-				<el-table-column prop="updateBy" label="修改人" width="220"></el-table-column>
-				<el-table-column prop="updateTime" label="修改时间" width="220"></el-table-column>
+				<el-table-column prop="id" label="ID"></el-table-column>
+				<el-table-column prop="nickName" label="昵称" ></el-table-column>
+				<el-table-column prop="phone" label="手机号" ></el-table-column>
+				<el-table-column prop="integralLog" label="积分日志" ></el-table-column>
+				<el-table-column prop="integralValue" label="积分值" ></el-table-column>
 			</el-table>
 			<!--渲染数据 end-->
 

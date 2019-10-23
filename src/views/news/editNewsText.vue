@@ -297,7 +297,6 @@ export default {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
 					var url = this.url;
-					console.log(this.fileList.name)
 					if(this.value == '' && this.temp.url == '') {
 						 this.$message.error('请填写新闻内容或者新闻地址');
 						 return;
