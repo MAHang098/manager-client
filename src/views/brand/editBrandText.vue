@@ -9,25 +9,26 @@
 				</div>
 			</el-form-item>
 			<el-form-item label="品牌图" prop="brandImg">
-				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				 action="http://www.zhongjubang.com/test/upload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-success="uploadSuccess"
-				 :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :limit="1" :on-exceed="handleExceed" 
-				 :file-list="fileList" :before-upload="beforeAvatarUpload">
-					<el-button size="small" type="primary">点击上传</el-button>
-					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+				<el-upload
+				action="http://www.zhongjubang.com/test/upload"
+				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
+				:on-preview="handlePreview"
+				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccess" :limit="1" 
+				:on-exceed="handleExceed" :file-list="fileList" :before-upload="beforeAvatarUpload">
+				<i class="el-icon-plus"></i>
 				</el-upload>
-				<!-- 放大图片 -->
-				<el-dialog :visible.sync="dialogVisible" size="tiny">
-					<img width="100%" :src="dialogImageUrl" alt="">
+				<el-dialog :visible.sync="dialogVisible">
+				<img width="100%" :src="fileImageUrl" alt="">
 				</el-dialog>
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
-				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreviewLog" 
-				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getlogfileName"  :on-success="uploadSuccessLog"
-				:multiple="false" :limit="1" :on-exceed="handleExceed" :file-list="logfileList" :before-upload="beforeAvatarUpload">
-					<el-button size="small" type="primary">点击上传</el-button>
-					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+				<el-upload
+				action="http://www.zhongjubang.com/test/upload"
+				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
+				:on-preview="handlePictureCardPreview"
+				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getlogfileName" :multiple="false" :on-success="uploadSuccessLog" :limit="1" 
+				:on-exceed="handleExceed" :file-list="logfileList" :before-upload="beforeAvatarUpload">
+				<i class="el-icon-plus"></i>
 				</el-upload>
 				<el-dialog :visible.sync="dialogVisible">
 				<img width="100%" :src="filelogImageUrl" alt="">
@@ -279,12 +280,13 @@ export default {
 		},
 		// 放大品牌图
 		handlePreview(file) {
-			// console.log(file);
-			 this.dialogImageUrl = file.url;
+			this.fileImageUrl = file.url;
         	this.dialogVisible = true;
 		},
-		handlePreviewLog(file) {
-			// console.log(file);
+		// 放大品牌图标
+		handlePictureCardPreview(file) {
+			this.filelogImageUrl = file.url;
+        	this.dialogVisible = true;
 		},
 		handleExceed(files, fileList) {
 			this.$message.warning('只能上传一张图片')
@@ -311,16 +313,8 @@ export default {
 			});
            
 		},
-		// handleRemove(file, fileList) {
-		// 	console.log(file, fileList);
-		// },
-		handlePictureCardPreview(file) {
-			console.log(file.name);
-			console.log(this.dialogImageUrl);
-			// console.log(file.url.name)
-			this.dialogImageUrl = file.url;
-			this.dialogVisible = true;
-		},
+		
+		// 提交
 		updateData() {
 			this.$refs["dataForm"].validate(valid => {
 				if (valid) {

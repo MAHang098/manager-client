@@ -23,14 +23,6 @@
 				</el-dialog>
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
-				<el-upload class="upload-demo"  accept="image/jpeg,image/jpg,image/png" 
-				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreviewLog" 
-				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getlogfileName" 
-				:multiple="false" :on-success="uploadSuccessLog" :limit="1" :on-exceed="handleExceed" :file-list="logfileList"
-				:before-upload="beforeAvatarUpload">
-					<el-button size="small" type="primary">点击上传</el-button>
-					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-				</el-upload>-->
 				<el-upload
 				action="http://www.zhongjubang.com/test/upload"
 				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
@@ -240,12 +232,9 @@ export default {
 			this.logfileList = [];
 		},
 		handlePreview(file) {
-			console.log(file);
+			// console.log(file);
 			this.dialogImageUrl = file.url;
-			this.dialogVisible = true;
-		},
-		handlePreviewLog(file) {
-			console.log(file);
+        	this.dialogVisible = true;
 		},
 		handleExceed(files, fileList) {
 			// this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);

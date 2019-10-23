@@ -132,7 +132,6 @@ export default {
 		},
 		// 审核状态
 		auditState(row) {
-			console.log(row.IdCardCheckStatus)
 			if(row.IdCardCheckStatus == 1) {
 				return '待审核'
 			} else if(row.IdCardCheckStatus == 2) {
@@ -160,7 +159,6 @@ export default {
 			this.Axios.post(url + "/admin/applet/getuserIdcard", parmas)
 				.then(res => {
 					if (res.status == 200) {
-						console.log(res)
 						this.loading = false;
 						const tableData = res.data.data.dataList;
 						this.tableData = tableData;
