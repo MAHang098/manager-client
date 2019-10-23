@@ -67,7 +67,7 @@ export default {
 			tableData: [],
 			loading: true,
 			pageTotal: 1,
-			currentPage2: 1,
+			currentPage2: 1
 		};
 	},
 	created() {
