@@ -259,6 +259,7 @@ export default {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
 					var url = this.url;
 					console.log(this.fileList.name)
+					console.log(this.temp.newsTypeId)
 					// 新闻内容和新闻链接二选一
 					if(this.value == '' && this.temp.url == '') {
 						 this.$message.error('请填写新闻内容或者新闻地址');
@@ -293,6 +294,7 @@ export default {
 					              	duration: 1000
 					            });
 								if(this.temp.newsTypeId == '1') {
+									console.log(1111111)
 									this.$router.push('../../table/office-web');
 								} else {
 									this.$router.push('../../table/complex-table');

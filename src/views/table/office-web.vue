@@ -1,7 +1,7 @@
 <template>
 	<div class="app-container">
 		<div class="filter-container">
-			<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="offcialAddNews">添加新闻</el-button>
+			<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addNews">添加新闻</el-button>
 			
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
@@ -16,14 +16,17 @@
 				</el-table-column>
 				<el-table-column prop="newsQuote" label="新闻简介" ></el-table-column>
 				<el-table-column prop="newsTitle" label="新闻标题"></el-table-column>
-				<!-- <el-table-column prop="url" label="跳转地址" width="220"></el-table-column> -->
 				<el-table-column label="新闻地址">
 					<template slot-scope="scope">
-						<a  :href="scope.row.url"  target="_blank" class="buttonText" >
+						<a v-if="scope.row.url == ''" :href="scope.row.url"  target="_blank" class="buttonText" >
+							{{scope.row.url}}
+						</a>
+						<a v-else :href="scope.row.url"  target="_blank" class="buttonText" >
 							{{(scope.row.url.split('//'))[0] + '//' +  (scope.row.url.split('/'))[2] }}
 						</a>
 					</template>
 				</el-table-column>
+
 				<!-- 删除功能 -->
 				<el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
 					<template slot-scope="{row}">
@@ -62,7 +65,7 @@ export default {
 	name: "officeWeb",
 	data() {
 		return {
-			newsType: "applet_news",
+			newsType: "official_news",
 			pageIndex: 1,
 			pageSize: 10,
 			search: "",
@@ -70,10 +73,7 @@ export default {
 			loading: true,
 			centerDialogVisible: false,
 			textarea2: "",
-			textMap: {
-				update: "Edit",
-				create: "Create"
-			},
+			
 			temp: {
 				newsContent: "",
 				newsImg: "",
@@ -102,7 +102,6 @@ export default {
 			//   pageSize: [10, 20, 30]
 			pageTotal: 1,
 			currentPage2: 1,
-
 		};
 	},
 	// 获取新闻数据
@@ -113,16 +112,19 @@ export default {
 	methods: {
 		// 修改每页条数
 		handleSizeChange(val) {
+			// console.log(`每页 ${val} 条`);
 			this.pageSize = `${val}`;
 			this.getInfo()
 		},
 		// 修改当前页
 		handleCurrentChange(val) {
+			// console.log(`当前页: ${val}`);
 			this.pageIndex = `${val}`;
 			this.getInfo()
 		},
 		getInfo() {
 			const url = "https://www.zhongjubang.com/test/";
+			
 			var parmas = {
 				newsType: this.newsType,
 				pageIndex: this.pageIndex,
@@ -134,7 +136,9 @@ export default {
 					if (res.status == 200) {
 						this.loading = false;
 						const tableData = res.data.data.dataList;
+						//   console.log(tableData);
 						this.tableData = tableData;
+						//   console.log(tableData);
 						this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
 					} else {
 						console.log(res.code);
@@ -168,56 +172,7 @@ export default {
 		},
 		getInput() {
 			const item = this.textarea2;
-		},
-		resetTemp() {
-			this.temp = {
-				newsContent: "",
-				newsImg: "",
-				newsQuote: "",
-				newsTitle: "",
-				newsTypeId: "",
-				url: ""
-			};
-		},
-		resetTemp2() {
-			this.temp2 = {
-				newsId: "",
-				newsContent: "",
-				newsImg: "",
-				newsQuote: "",
-				newsTitle: "",
-				newsTypeId: "",
-				url: ""
-			};
-		},
-		handleCreate() {
-			this.resetTemp();
-			this.dialogStatus = "create";
-			this.dialogFormVisible = true;
-			this.$nextTick(() => {
-				this.$refs["dataForm"].clearValidate();
-			});
-		},
-		createData() {
-			this.$refs["dataForm"].validate(valid => {
-				if (valid) {
-					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-					const url = "http://www.zhongjubang.com/test/";
-
-					this.Axios.post(url + "/admin/offcial/addnews", {
-						newsContent: this.temp.newsContent,
-						newsImg: this.temp.newsImg,
-						newsQuote: this.temp.newsQuote,
-						newsTitle: this.temp.newsTitle,
-						newsTypeId: this.temp.newsTypeId,
-						url: this.temp.url
-					}).then(res => {
-						if (res.status == 200) {
-							console.log("上传成功");
-						}
-					});
-				}
-			});
+			console.log(item);
 		},
 		delNews(row) {
 			this.$confirm("此操作将永久删除, 是否继续?", "提示", {
@@ -267,15 +222,16 @@ export default {
 		},
 		handleUpdate(row) {
 			this.$router.push({
-		        path:'../../table/editNews',
-		        query:{nameId:row.newsId}
+		        path:'/table/editNews',
+		        query:{newsId:row.newsId}
 	      	})
 		},
+		
 		gotoCreate() {
 			this.$router.replace('/table/inline-edit-table')
 		},
-		offcialAddNews() {
-			this.$router.replace('../../table/addNews');
+		addNews() {
+			this.$router.replace('/table/addNews');
 		}
 	}
 };

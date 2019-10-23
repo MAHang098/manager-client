@@ -94,6 +94,7 @@ export default {
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize,
 			}
+			this.loading = true;
 			this.Axios.post(url + "/admin/applet/getbrandlist", parmas)
 				.then(res => {
 
