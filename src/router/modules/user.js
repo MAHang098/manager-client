@@ -1,5 +1,6 @@
 import Layout from '@/layout'
 
+
 const userRouter = {
   path: '/user',
   component: Layout,
@@ -39,7 +40,29 @@ const userRouter = {
       component: () => import('@/views/user/cash'),
       name: 'cash',
       meta: { title: '提现审核' }
-    }
+    },
+    {
+      path: '/cash',
+      // component: () => import('@/views/user/balance'),
+      name: 'test',
+      redirect: 'Cash',
+      component: () => import('@/views/user/cash'),
+      meta: { title: '三级菜单' },
+      children: [
+        {
+          path: 'bank',
+          component: () => import('@/views/user/cash/bank'),
+          name: 'bank',
+          meta: { title: '银行' }
+        },
+        {
+          path: 'alipay',
+          component: () => import('@/views/user/cash/alipay'),
+          name: 'alipay',
+          meta: { title: '支付宝' }
+        },
+      ]
+    },
   ]
 }
 
