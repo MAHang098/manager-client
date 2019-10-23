@@ -8,17 +8,28 @@
 				</div>
 			</el-form-item>
 			<el-form-item label="新闻大图" prop="newsImg" >
-				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
+				<!-- <el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
 				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
 				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false"  :on-success="uploadSuccess"
 				:limit="1" :on-exceed="handleExceed" :file-list="fileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-				</el-upload>
+				</el-upload> -->
 				<!--<el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-change="handleChange" :file-list="fileList">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 				</el-upload>-->
+				<el-upload
+				action="http://www.zhongjubang.com/test/upload"
+				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
+				:on-preview="handlePreview"
+				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccess" :limit="1" 
+				:on-exceed="handleExceed" :file-list="fileList" :before-upload="beforeAvatarUpload">
+				<i class="el-icon-plus"></i>
+				</el-upload>
+				<el-dialog :visible.sync="dialogVisible">
+				<img width="100%" :src="dialogImageUrl" alt="">
+				</el-dialog>
 			</el-form-item>
 			<el-form-item label="新闻简介" prop="newsQuote">
 				<el-input v-model="temp.newsQuote" />
@@ -193,9 +204,11 @@ export default {
 			if(response.code == 200) {
 				this.fileList.name = response.data.fileName;
 			}
+			
 		},
 		handlePreview(file) {
-			console.log(file);
+			this.dialogImageUrl = file.url;
+        	this.dialogVisible = true;
 		},
 		handleExceed(files, fileList) {
 			// this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
