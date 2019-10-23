@@ -17,11 +17,7 @@
 				<el-table-column prop="newsImg" label="新闻大图" width="200">
 					<!-- 显示图片 -->
 					<template scope="scope">
-						<!-- <img :src="scope.row.newsImg" width="180" height="80" class="head_pic" /> -->
-						<div class="demo-image__preview">
-
-						<el-image style="width: 100px; height: 100px" :src="scope.row.newsImg" :preview-src-list="scope.row.newsImg"></el-image>
-						</div>
+						<img :src="scope.row.newsImg" width="180" height="80" class="head_pic" />
 					</template>
 				</el-table-column>
 				<el-table-column prop="newsQuote" label="新闻简介" ></el-table-column>

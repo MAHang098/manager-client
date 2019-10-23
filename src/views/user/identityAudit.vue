@@ -125,11 +125,10 @@ export default {
 		},
 		// 奖励状态
 		rewardState(row) {
-			return row.IdCardRewardStatus == 1 ? '已领取' : '未领取'
+			return row.businessCardCheckStatus === '1' ? '已领取' : '未领取'
 		},
 		// 审核状态
 		auditState(row) {
-			console.log(row.businessCardCheckStatus)
 			if(row.businessCardCheckStatus == 1) {
 				return '待审核'
 			} else if(row.businessCardCheckStatus == 2) {
