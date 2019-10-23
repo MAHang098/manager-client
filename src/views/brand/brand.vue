@@ -105,7 +105,6 @@ export default {
 						const tableData = res.data.data.dataList;
 						this.tableData = tableData;
 						this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
-
 					} else {
 						if (res.code == 400) {
 							console.log("请求异常");
