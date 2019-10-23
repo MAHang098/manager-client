@@ -1,5 +1,6 @@
 import Layout from '@/layout'
 
+
 const userRouter = {
   path: '/user',
   component: Layout,
@@ -33,13 +34,9 @@ const userRouter = {
       component: () => import('@/views/user/identify'),
       name: 'identify',
       meta: { title: '实名审核' }
-    },
-    {
-      path: 'cash',
-      component: () => import('@/views/user/cash'),
-      name: 'cash',
-      meta: { title: '提现审核' }
     }
+    
+    
   ]
 }
 
