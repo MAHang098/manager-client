@@ -1,40 +1,25 @@
 <template>
 	<div class="app-container">
 		<div class="filter-container">
-			<!--<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addNews">添加新闻</el-button>-->
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
-				<!--<el-table-column prop="newsId" label="ID" width="40"></el-table-column>-->
-				<!--<Tinymce newsId='ID'></Tinymce>-->
-				<el-table-column prop="userId" label="用户ID" width="100"></el-table-column>
-				<el-table-column prop="realName" label="真实名字" width="100"></el-table-column>
-				<el-table-column prop="businessCardPic" label="名片照片" width="220">
-					<template scope="scope">
-						<img :src="scope.row.businessCardPic" width="100" height="150" class="head_pic" />
-					</template>
-				</el-table-column>
-				<el-table-column prop="nickName" label="昵称"></el-table-column>
-				<el-table-column prop="companyName" label="公司名"> </el-table-column>
-				<el-table-column prop="businessCardSubmitTime" label="提交时间"></el-table-column>
-				<el-table-column prop="businessCardCheckStatus" label="奖励状态" :formatter="rewardState"></el-table-column>
-				<el-table-column prop="businessCardCheckStatus" label="审核状态" :formatter="auditState"></el-table-column>
-				<el-table-column label="状态修改" align="center" width="180" class-name="small-padding fixed-width">
-					<template slot-scope="{row}">
-						<el-button type="primary" size="mini" @click="handleUpdate(row)">修改</el-button>
-					</template>
-				</el-table-column>
-			</el-table>
-
-		
+				<el-table-column prop="id" label="订单id" width="180"></el-table-column>
+				<el-table-column prop="userid" label="用户id" width="180"></el-table-column>
+				<el-table-column prop="isDel" label="是否删除" width="180"></el-table-column>
+				<el-table-column prop="state" label="状态" width="180"></el-table-column>
+				<el-table-column prop="phone" label="手机号" width="180"></el-table-column>
+				<el-table-column prop="nickname" label="昵称" width="180"></el-table-column>
+				<el-table-column prop="createBy" label="创建人" width="180"></el-table-column>
+				<el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+				<el-table-column prop="vipOrderId" label="订单唯一id" min-width="180"></el-table-column>
+            </el-table>
 			<!--分页 start-->
+			<!--<el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>-->
 			<div class="block">
-
-				<el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[10, 20, 30]" :page-size="pageSize" layout="sizes, prev, pager, next" :total="pageTotal">
+                <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[10, 20, 30]" :page-size="100" layout="sizes, prev, pager, next" :total="pageTotal">
 				</el-pagination>
 			</div>
-			<!--分页 end-->
-
-			<!-- 修改实名状态  -->
+            <!-- 添加新闻弹框  -->
 			
 			<el-dialog :visible.sync="dialogFormVisible">
 				<el-form ref="dataForm" label-position="left" :model="temp" label-width="100px" style="width: 400px; margin-left:50px;">
@@ -45,6 +30,9 @@
 							</el-option>
 						</el-select>
 					</el-form-item>
+					<el-form-item label="加多少钱钱" prop="title">
+						<el-input v-model="temp.cost" />
+					</el-form-item>
 					
 				</el-form>
 				<div slot="footer" class="dialog-footer">
@@ -52,6 +40,7 @@
 					<el-button type="primary" @click="sendData()">确认</el-button>
 				</div>
 			</el-dialog>
+			<!--分页 end-->
 		</div>
 	</div>
 </template>
@@ -68,40 +57,26 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import https from "../../../https.js"; // 注意用自己的路径
-// import Tinymce from "/components/Tinymce"
-// import Tinymce from 'components/Tinymce'
+
 export default {
-	name: "identityAudit",
+	name: "Recommand",
 	data() {
 		return {
-			state: "",
 			loading: true,
-			states: [
-				{
-					value: '1',
-					label: '待审核'
-				},
-				{
-					value: '2',
-					label: '已审核'
-				},
-				{
-					value: '3',
-					label: '审核不通过'
-				}
-			],
-			newsType: "applet_news",
+			
 			pageIndex: 1,
 			pageSize: 10,
 			search: "",
 			tableData: [],
-			temp: {
-				state: ""
+			state: "",
+			pageTotal: null,
+            currentPage2: 1,
+            tpRecommendId: '',
+            dialogFormVisible: false,
+            temp: {
+				state: "",
+				cost: ""
 			},
-			dialogFormVisible: false,
-			
-			pageTotal: 1,
-			currentPage2: 1,
 
 		};
 	},
@@ -123,38 +98,22 @@ export default {
 			this.pageIndex = `${val}`;
 			this.getInfo()
 		},
-		// 奖励状态
-		rewardState(row) {
-			return row.IdCardRewardStatus == 1 ? '已领取' : '未领取'
-		},
-		// 审核状态
-		auditState(row) {
-			console.log(row.businessCardCheckStatus)
-			if(row.businessCardCheckStatus == 1) {
-				return '待审核'
-			} else if(row.businessCardCheckStatus == 2) {
-				return '已审核'
-			} else {
-				return '审核不通过'
-			}
-		},
 		getInfo() {
 			const url = "https://www.zhongjubang.com/test/";
+			
 			var parmas = {
+				state: '',
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize
 			}
-			this.Axios.post(url + "/admin/applet/getusernamecard", parmas)
+			this.loading = true;
+			this.Axios.post(url + "/admin/applet/getuserviprecommendbystate", parmas)
 				.then(res => {
 					// console.log(res);
-					// console.log(res.status);
-					// console.log(res.data.data.dataList);
-					// 
-
 					if (res.status == 200) {
 						this.loading = false;
 						const tableData = res.data.data.dataList;
-						//   console.log(tableData);
+						
 						this.tableData = tableData;
 						//   console.log(tableData);
 						this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
@@ -188,27 +147,28 @@ export default {
 						}
 					}
 				});
-		},
+        },
 		getInput() {
 			const item = this.textarea2;
+			console.log(item);
 		},
 		handleUpdate(row) {
-            console.log(row.userId)
-            this.userId = row.userId
+            console.log(row.tpRecommendId)
+            this.tpRecommendId = row.tpRecommendId
             this.dialogFormVisible = true
-            // this.$nextTick(() => {
-            //     this.$refs['dataForm'].clearValidate()
-            // })
-		},
-		sendData(){
-            console.log(this.userId)
-            console.log(this.temp.state)
+            this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+            })
+        },
+        sendData(){
+            console.log(this.tpRecommendId)
             const url = "https://www.zhongjubang.com/test/";
 			var parmas = {
 				state: this.temp.state,
-                userId: this.userId
+                tpRecommendId: this.tpRecommendId,
+                cost: this.temp.cost
 			}
-			this.Axios.post(url + "/admin/applet/updateusernamecardstate", parmas)
+			this.Axios.post(url + "admin/applet/updateuserrecommendstate", parmas)
 				.then(res => {
 					// console.log(res);
 					
@@ -217,7 +177,7 @@ export default {
 						// const tableData = res.data.data.dataList;
 						// this.tableData = tableData;
                         // this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
-                        console.log('修改成功')
+                        console.log('上传成功')
 						this.dialogFormVisible = false
                         this.$notify({
                             title: '成功',
@@ -256,8 +216,9 @@ export default {
 						}
 					}
 				});
-        },
-	
+        }
+		
+		
 	}
 };
 </script>

@@ -23,9 +23,15 @@
 				</el-dialog>
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
+<<<<<<< HEAD
 				<!--<el-upload class="upload-demo"  accept="image/jpeg,image/jpg,image/png" 
 				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
 				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getlogfileName" 
+=======
+				<el-upload class="upload-demo"  accept="image/jpeg,image/jpg,image/png" 
+				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreviewLog" 
+				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getlogfileName" 
+>>>>>>> 935493ba36a37cce9d2e2af422ab82375d73ba41
 				:multiple="false" :on-success="uploadSuccessLog" :limit="1" :on-exceed="handleExceed" :file-list="logfileList"
 				:before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
@@ -240,9 +246,18 @@ export default {
 			this.logfileList = [];
 		},
 		handlePreview(file) {
+<<<<<<< HEAD
 			// console.log(file);
 			this.dialogImageUrl = file.url;
         	this.dialogVisible = true;
+=======
+			console.log(file);
+			this.dialogImageUrl = file.url;
+			this.dialogVisible = true;
+		},
+		handlePreviewLog(file) {
+			console.log(file);
+>>>>>>> 935493ba36a37cce9d2e2af422ab82375d73ba41
 		},
 		handleExceed(files, fileList) {
 			// this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);

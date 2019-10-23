@@ -15,7 +15,13 @@ const orderRecommand = {
       component: () => import('@/views/order-manager/recommend'),
       name: 'recommand',
       meta: { title: '推荐订单' }
-    }
+    },
+    {
+      path: 'vipPay',
+      component: () => import('@/views/order-manager/vipPay'),
+      name: 'vipPay',
+      meta: { title: '会员支付订单' }
+    },
   ]
 }
 
