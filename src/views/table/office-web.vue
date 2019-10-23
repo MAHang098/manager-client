@@ -258,7 +258,7 @@ export default {
 		handleUpdate(row) {
 			this.$router.push({
 		        path:'../../table/editNews',
-		        query:{nameId:row.newsId}
+		        query:{newsId:row.newsId}
 	      	})
 	// 		this.$router.push({
 	//         	name:'editBrand',

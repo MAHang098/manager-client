@@ -58,7 +58,7 @@ const tinymceCDN =
 	"https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js";
 
 export default {
-	name: "addNewsText",
+	name: "editNewsText",
 	components: { editorImage },
 	props: {
 		id: {
@@ -193,7 +193,6 @@ export default {
 		this.destroyTinymce();
 	},
 	methods: {
-        // 获取新闻详情
         // 获取新闻详情
         detailNews(id) {
 			this.Axios.post(this.url + '/admin/applet/getnewsdetailbyid', {newId: id})
