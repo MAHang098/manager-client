@@ -115,7 +115,6 @@ export default {
 					{ required: true, message: "title is required", trigger: "blur" }
 				]
 			},
-			//   pageSize: [10, 20, 30]
 			pageTotal: 1,
 			currentPage2: 1,
 		};
@@ -138,21 +137,20 @@ export default {
 			this.pageSize = `${val}`;
 			this.getInfo()
 		},
+		// 图片模态框的显示
 		handlePreview(row) {
-			// console.log(row);
 			this.dialogImageUrl = row.newsImg;
 			this.dialogVisible = true;
 		},
 		// 修改当前页
 		handleCurrentChange(val) {
-			// console.log(`当前页: ${val}`);
 			this.pageIndex = `${val}`;
 			this.getInfo()
 		},
 		getInfo() {
 			const url = "https://www.zhongjubang.com/test/";
 			
-			var parmas = {
+			let parmas = {
 				newsType: this.newsType,
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize,
@@ -198,6 +196,7 @@ export default {
 		getInput() {
 			const item = this.textarea2;
 		},
+		// 删除数据
 		delNews(row) {
 			this.$confirm("此操作将永久删除, 是否继续?", "提示", {
 				confirmButtonText: "确定",
@@ -205,7 +204,6 @@ export default {
 				type: "warning"
 			}).then(() => {
 				const url = "http://www.zhongjubang.com/test/";
-
 				this.Axios.post(url + "/admin/offcial/delnews", {
 					newsId: row.newsId
 				}).then(res => {
