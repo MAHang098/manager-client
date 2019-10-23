@@ -61,7 +61,7 @@ import https from "../../../https.js"; // 注意用自己的路径
 // import Tinymce from "/components/Tinymce"
 // import Tinymce from 'components/Tinymce'
 export default {
-	name: "table",
+	name: "comlex-table",
 	data() {
 		return {
 			newsType: "applet_news",

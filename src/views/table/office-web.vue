@@ -61,7 +61,7 @@ import https from "../../../https.js"; // 注意用自己的路径
 // import Tinymce from "/components/Tinymce"
 // import Tinymce from 'components/Tinymce'
 export default {
-	name: "officeWeb",
+	name: "office-web",
 	data() {
 		return {
 			newsType: "official_news",
@@ -95,7 +95,7 @@ export default {
 			},
 			newsContent: "",
 			dialogStatus: "",
-			dialogFormVisible: false,
+			// dialogFormVisible: false,
 			rules: {
 				newsTitle: [
 					{ required: true, message: "title is required", trigger: "blur" }
@@ -175,7 +175,7 @@ export default {
 		},
 		getInput() {
 			const item = this.textarea2;
-			
+			console.log(item);
 		},
 		// resetTemp() {
 		// 	this.temp = {
