@@ -8,14 +8,23 @@
 				<el-table-column prop="realName" label="真实名字" width="100"></el-table-column>
 				<el-table-column prop="IdCardPic1" label="身份证正面" width="220">
 					<template scope="scope">
-						<img :src="scope.row.IdCardPic1" width="100" height="150" class="head_pic" />
+						<!-- <img :src="scope.row.IdCardPic1" width="100" height="150" class="head_pic" /> -->
+
+						<img :src="scope.row.IdCardPic1" width="100" height="150" class="head_pic" @click="handlePreview(scope.row)" />
+						<el-dialog :visible.sync="dialogVisible">
+							<img width="100%" :src="dialogImageUrl" alt="">
+						</el-dialog>
 					</template>
 				</el-table-column>
 				
 				<el-table-column prop="IdCardPic2" label="身份证反面" width="220">
 					<!-- 显示图片 -->
 					<template scope="scope">
-						<img :src="scope.row.IdCardPic2" width="100" height="150" class="head_pic" />
+						<!-- <img :src="scope.row.IdCardPic2" width="100" height="150" class="head_pic" /> -->
+						<img :src="scope.row.IdCardPic2" width="100" height="150" class="head_pic" @click="handlePreview1(scope.row)" />
+						<el-dialog :visible.sync="dialogVisible">
+							<img width="100%" :src="dialogImageUrl" alt="">
+						</el-dialog>
 					</template>
 				</el-table-column>
 				<el-table-column prop="nickName" label="昵称"></el-table-column>
@@ -82,6 +91,8 @@ export default {
 	data() {
 		return {
 			state: "",
+			dialogVisible: false,
+			dialogImageUrl: '',
 			loading: true,
 			dialogFormVisible: false,
 			temp: {
@@ -130,6 +141,15 @@ export default {
 			this.pageIndex = `${val}`;
 			this.getInfo()
 		},
+		// 图片模态框的显示
+		handlePreview(row) {
+			this.dialogImageUrl = row.IdCardPic1;
+			this.dialogVisible = true;
+		},
+		handlePreview1(row) {
+			this.dialogImageUrl = row.IdCardPic2;
+			this.dialogVisible = true;
+		},
 		// 审核状态
 		auditState(row) {
 			if(row.IdCardCheckStatus == 1) {
@@ -141,7 +161,6 @@ export default {
 			}
 		},
 		encourageState(row) {
-			console.log(row.IdCardRewardStatus)
 			if(row.IdCardRewardStatus == 1) {
 				return '已领取'
 			}  else {

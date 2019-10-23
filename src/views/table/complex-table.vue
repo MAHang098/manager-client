@@ -17,10 +17,11 @@
 				<el-table-column prop="newsImg" label="新闻大图" width="200">
 					<!-- 显示图片 -->
 					<template scope="scope">
-						<img :src="scope.row.newsImg" width="180" height="80" class="head_pic" @click="handlePreview(scope.row)" />
+						<img :src="scope.row.newsImg" width="180" height="80" class="head_pic" />
+						<!-- <img :src="scope.row.newsImg" width="180" height="80" class="head_pic" @click="handlePreview(scope.row)" />
 						<el-dialog :visible.sync="dialogVisible">
 							<img width="100%" :src="dialogImageUrl" alt="">
-						</el-dialog>
+						</el-dialog> -->
 					</template>
 				</el-table-column>
 				

@@ -10,9 +10,9 @@
 				<el-table-column prop="realName" label="真实名字" width="100"></el-table-column>
 				<el-table-column prop="businessCardPic" label="名片照片" width="220">
 					<template scope="scope">
-						<img :src="scope.row.businessCardPic" width="100" height="150" class="head_pic" @click="handlePreview" />
+						<img :src="scope.row.businessCardPic" width="100" height="150" class="head_pic" @click="handlePreview(scope.row)" />
 						<el-dialog :visible.sync="dialogVisible">
-							<img width="100%" :src="scope.row.businessCardPic" alt="">
+							<img width="100%" :src="dialogImageUrl" alt="">
 						</el-dialog>
 					</template>
 				</el-table-column>
@@ -106,7 +106,7 @@ export default {
 			
 			pageTotal: 1,
 			currentPage2: 1,
-
+			dialogImageUrl: ''
 		};
 	},
 	// 获取新闻数据
@@ -122,7 +122,8 @@ export default {
 			this.getInfo()
 		},
 		//放大图片
-		handlePreview() {
+		handlePreview(row) {
+			this.dialogImageUrl = row.newsImg;
 			this.dialogVisible = true;
 		},
 		// 修改当前页
