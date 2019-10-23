@@ -142,7 +142,7 @@ export default {
 				newsQuote:  [{ required: true, message: '请输入新闻简介', trigger: 'blur' }],
 				newsTitle:  [{ required: true, message: '请输入新闻标题', trigger: 'blur' }],
 				newsTypeId:  [{ required: true, message: '请输入新闻类型', trigger: 'blur' }],
-				url:  [{ required: true, message: '请输入新闻跳转地址', trigger: 'blur' }]
+				// url:  [{ required: true, message: '请输入新闻跳转地址', trigger: 'blur' }]
 			},
             detailsId: ''   // 新闻详情id
 		};

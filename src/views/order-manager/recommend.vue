@@ -7,7 +7,7 @@
 				<el-table-column prop="userPhone" label="用户手机" width="140"></el-table-column>
 				<el-table-column prop="name" label="客户名" width="140"></el-table-column>
 				<el-table-column prop="nickname" label="用户昵称" min-width="140"></el-table-column>
-				<el-table-column prop="state" label="审核状态" width="140"></el-table-column>
+				<el-table-column prop="state" label="审核状态" width="140" :formatter="auditState"></el-table-column>
 				<el-table-column prop="type" label="需求来源" width="140"></el-table-column>
 				<el-table-column prop="userId" label="用户id" width="140"></el-table-column>
 				<el-table-column prop="tpRecommendId" label="推荐订单id" width="140"></el-table-column>
@@ -128,6 +128,22 @@ export default {
 			// console.log(`当前页: ${val}`);
 			this.pageIndex = `${val}`;
 			this.getInfo()
+		},
+		auditState(row) {
+			console.log(row.state)
+			if(row.state == 1) {
+				return '待处理'
+			} else if(row.state == 2) {
+				return '处理中'
+			} else if(row.state == 3) {
+				return '有需求'
+			} else if(row.state == 4) {
+				return '无需求'
+			} else if(row.state == 5) {
+				return '签约成功'
+			} else {
+				return '签约失败'
+			}
 		},
 		getInfo() {
 			const url = "https://www.zhongjubang.com/test/";

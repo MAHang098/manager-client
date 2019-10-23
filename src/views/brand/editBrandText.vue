@@ -10,27 +10,20 @@
 			</el-form-item>
 			<el-form-item label="品牌图" prop="brandImg">
 				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				 action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="uploadSuccess"
+				 action="http://www.zhongjubang.com/test/upload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" :on-success="uploadSuccess"
 				 :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :limit="1" :on-exceed="handleExceed" 
 				 :file-list="fileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 				</el-upload>
-				<!--<el-upload
-				action="http://www.zhongjubang.com/test/upload"
-				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				:on-preview="handlePreview"
-				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccess" :limit="1" 
-				:on-exceed="handleExceed" :file-list="fileList" :before-upload="beforeAvatarUpload">
-				<i class="el-icon-plus"></i>
-				</el-upload>
-				<el-dialog :visible.sync="dialogVisible">
-				<img width="100%" :src="dialogImageUrl" alt="">
-				</el-dialog>-->
+				<!-- 放大图片 -->
+				<el-dialog :visible.sync="dialogVisible" size="tiny">
+					<img width="100%" :src="dialogImageUrl" alt="">
+				</el-dialog>
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
 				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
+				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreviewLog" 
 				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getlogfileName"  :on-success="uploadSuccessLog"
 				:multiple="false" :limit="1" :on-exceed="handleExceed" :file-list="logfileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
@@ -126,6 +119,7 @@ export default {
 			hasInit: false,
 			tinymceId: this.id,
 			fullscreen: false,
+			
 			languageTypeList: {
 				en: "en",
 				zh: "zh_CN",
@@ -139,6 +133,7 @@ export default {
 			dialogImageUrl: "",
 			dialogVisible: false,
 			dialogFormVisible: false,
+			
 			temp: {
 				brandIcon: "",
 				brandImg: "",
@@ -275,6 +270,11 @@ export default {
 		},
 		handlePreview(file) {
 			// console.log(file);
+			 this.dialogImageUrl = file.url;
+        	this.dialogVisible = true;
+		},
+		handlePreviewLog(file) {
+			// console.log(file);
 		},
 		handleExceed(files, fileList) {
 			// this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -307,6 +307,7 @@ export default {
 		// },
 		handlePictureCardPreview(file) {
 			console.log(file.name);
+			console.log(this.dialogImageUrl);
 			// console.log(file.url.name)
 			this.dialogImageUrl = file.url;
 			this.dialogVisible = true;

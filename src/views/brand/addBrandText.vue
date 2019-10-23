@@ -24,7 +24,7 @@
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
 				<el-upload class="upload-demo"  accept="image/jpeg,image/jpg,image/png" 
-				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
+				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreviewLog" 
 				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getlogfileName" 
 				:multiple="false" :on-success="uploadSuccessLog" :limit="1" :on-exceed="handleExceed" :file-list="logfileList"
 				:before-upload="beforeAvatarUpload">
@@ -219,6 +219,11 @@ export default {
 			console.log(file)
 		},
 		handlePreview(file) {
+			console.log(file);
+			this.dialogImageUrl = file.url;
+			this.dialogVisible = true;
+		},
+		handlePreviewLog(file) {
 			console.log(file);
 		},
 		handleExceed(files, fileList) {
