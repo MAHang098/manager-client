@@ -58,10 +58,9 @@ import https from "../../../https.js"; // 注意用自己的路径
 // import Tinymce from "/components/Tinymce"
 // import Tinymce from 'components/Tinymce'
 export default {
-	name: "brand",
+	name: "brandList",
 	data() {
 		return {
-			newsType: "applet_news",
 			pageIndex: 1,
 			pageSize: 10,
 			search: "",
@@ -69,16 +68,15 @@ export default {
 			loading: true,
 			pageTotal: 1,
 			currentPage2: 1,
-
 		};
 	},
 	created() {
-
+		
 	},
 	// 获取新闻数据
 	mounted() {
-		this.getInfo();
 		this.getInput();
+		this.getInfo();
 	},
 	methods: {
 		// 修改每页条数
@@ -139,6 +137,7 @@ export default {
 		},
 		getInput() {
 			const item = this.textarea2;
+			console.log(item)
 		},
 		// 删除整条品牌数据
 		deleteBrand(id) {

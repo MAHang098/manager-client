@@ -9,13 +9,6 @@
 				</div>
 			</el-form-item>
 			<el-form-item label="品牌图" prop="brandImg">
-				<!--<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				 action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="uploadSuccess"
-				 :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :limit="1" :on-exceed="handleExceed" 
-				 :file-list="fileList" :before-upload="beforeAvatarUpload">
-					<el-button size="small" type="primary">点击上传</el-button>
-					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-				</el-upload>-->
 				<el-upload
 				action="http://www.zhongjubang.com/test/upload"
 				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
@@ -25,27 +18,20 @@
 				<i class="el-icon-plus"></i>
 				</el-upload>
 				<el-dialog :visible.sync="dialogVisible">
-				<img width="100%" :src="dialogImageUrl" alt="">
+				<img width="100%" :src="fileImageUrl" alt="">
 				</el-dialog>
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
-				<!--<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
-				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getlogfileName"  :on-success="uploadSuccessLog"
-				:multiple="false" :limit="1" :on-exceed="handleExceed" :file-list="logfileList" :before-upload="beforeAvatarUpload">
-					<el-button size="small" type="primary">点击上传</el-button>
-					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-				</el-upload>-->
 				<el-upload
 				action="http://www.zhongjubang.com/test/upload"
 				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				:on-preview="handlePreview"
-				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccessLog" :limit="1" 
+				:on-preview="handlePictureCardPreview"
+				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getlogfileName" :multiple="false" :on-success="uploadSuccessLog" :limit="1" 
 				:on-exceed="handleExceed" :file-list="logfileList" :before-upload="beforeAvatarUpload">
 				<i class="el-icon-plus"></i>
 				</el-upload>
 				<el-dialog :visible.sync="dialogVisible">
-				<img width="100%" :src="dialogImageUrl" alt="">
+				<img width="100%" :src="filelogImageUrl" alt="">
 				</el-dialog>
 			</el-form-item>
 			<el-form-item label="品牌喜欢人数" prop="brandLike">
@@ -85,7 +71,7 @@ const tinymceCDN =
 	"https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js";
 
 export default {
-	name: "commonBrand",
+	name: "editBrandText",
 	components: { editorImage },
 	props: {
 		id: {
@@ -129,8 +115,8 @@ export default {
 	data() {
 		return {
 			url: "https://www.zhongjubang.com/test/",
-			fileList: [],
-			logfileList: [],
+			fileList: [],  // 品牌图数组
+			logfileList: [], // 品牌图标数组
 			brandId: '',  // 品牌id
 			hasChange: false,
 			hasInit: false,
@@ -146,7 +132,8 @@ export default {
 				newsTypeId: "",
 				newsTitle: ""
 			},
-			dialogImageUrl: "",
+			fileImageUrl: "", // 品牌图
+			filelogImageUrl: "", // 品牌图标
 			dialogVisible: false,
 			dialogFormVisible: false,
 			temp: {
@@ -201,6 +188,7 @@ export default {
 		}
 		this.fileList = [];
 		this.logfileList = [];
+		// 获取编辑详情
 		let detailData = this.$route.params.data;
 		this.brandId = detailData.id;
 		this.temp = {
@@ -250,21 +238,28 @@ export default {
         },
 		// 品牌图上传成功
 		uploadSuccess(response, file, fileList) {
+			// console.log(file)
 			if(response.code == 200) {
 				let obj = {
-					name: response.data.fileName
+					name: response.data.fileName,
+					url:  response.data.fileUrl
 				}
-				this.fileList.push(obj)
+				this.fileList.push(obj);
+				
 			}
+			// this.fileImageUrl = file.url;
+			// console.log(this.fileList)
 		},
 		// 品牌图标上传成功
 		uploadSuccessLog(response, file, fileList) {
 			if(response.code == 200) {
 				let obj = {
-					name: response.data.fileName
+					name: response.data.fileName,
+					url:  response.data.fileUrl
 				}
 				this.logfileList.push(obj)
 			}
+			this.filelogImageUrl = file.url;
 		},
 		handleChange(file, fileList) {
         	this.fileList = fileList.slice(-3);
@@ -281,11 +276,17 @@ export default {
 		handleRemoveLog(file, fileList) {
 			this.logfileList = [];
 		},
+		// 放大品牌图
 		handlePreview(file) {
-			// console.log(file);
+			this.fileImageUrl = file.url;
+        	this.dialogVisible = true;
+		},
+		// 放大品牌图标
+		handlePictureCardPreview(file) {
+			this.filelogImageUrl = file.url;
+        	this.dialogVisible = true;
 		},
 		handleExceed(files, fileList) {
-			// this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
 			this.$message.warning('只能上传一张图片')
 		},
 		beforeRemove(file, fileList) {
@@ -310,13 +311,8 @@ export default {
 			});
            
 		},
-		// handleRemove(file, fileList) {
-		// 	console.log(file, fileList);
-		// },
-		handlePictureCardPreview(file) {
-			this.dialogImageUrl = file.url;
-			this.dialogVisible = true;
-		},
+		
+		// 提交
 		updateData() {
 			this.$refs["dataForm"].validate(valid => {
 				if (valid) {
@@ -338,8 +334,8 @@ export default {
 					}
                     var params = {
                         brandDetails: this.value,
-                        brandImg: this.logfileList[0].name,
-						brandIcon: this.fileList[0].name,
+                        brandIcon: this.logfileList[0].name,
+						brandImg: this.fileList[0].name,
 						brandLike: this.temp.brandLike,
 						brandName: this.temp.brandName,
 						brandRoyalty: this.temp.brandRoyalty,
