@@ -10,7 +10,9 @@
 				<el-table-column prop="realName" label="真实名字" width="100"></el-table-column>
 				<el-table-column prop="businessCardPic" label="名片照片" width="220">
 					<template scope="scope">
-						<img :src="scope.row.businessCardPic" width="100" height="150" class="head_pic" />
+						<a :href="scope.row.businessCardPic" style="display: block" target="_blank">
+							<img :src="scope.row.businessCardPic" width="100" height="150" class="head_pic" />
+						</a>
 					</template>
 				</el-table-column>
 				<el-table-column prop="nickName" label="昵称"></el-table-column>
