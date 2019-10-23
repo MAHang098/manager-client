@@ -21,7 +21,7 @@
 				<el-table-column prop="nickName" label="昵称"></el-table-column>
 				<el-table-column prop="companyName" label="公司名"> </el-table-column>
 				<el-table-column prop="IdCardSubmitTime" label="提交时间"></el-table-column>
-				<el-table-column prop="IdCardRewardStatus" label="奖励状态"></el-table-column>
+				<el-table-column prop="IdCardRewardStatus" label="奖励状态" :formatter="encourageState"></el-table-column>
 				<el-table-column prop="IdCardNum" label="身份证号"></el-table-column>
 				<el-table-column prop="IdCardCheckStatus" label="审核状态" :formatter="auditState"></el-table-column>
 				<el-table-column label="状态修改" align="center" width="180" class-name="small-padding fixed-width">
@@ -139,6 +139,14 @@ export default {
 				return '已审核'
 			} else {
 				return '审核不通过'
+			}
+		},
+		encourageState(row) {
+			console.log(row.IdCardRewardStatus)
+			if(row.IdCardRewardStatus == 1) {
+				return '已领取'
+			}  else {
+				return '未领取'
 			}
 		},
 		getInfo() {

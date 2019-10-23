@@ -4,7 +4,6 @@
 			
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba">
-				
 				<el-table-column prop="aliPayName" label="支付宝名" width="160"></el-table-column>
 				<el-table-column prop="realName" label="真实姓名" min-width="160"></el-table-column>
 				<el-table-column prop="aliPayAccount" label="支付宝账户" width="160"></el-table-column>
@@ -13,7 +12,7 @@
 				<el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
 				<el-table-column prop="companyName" label="公司名" width="160"></el-table-column>
 				<el-table-column prop="nickname" label="昵称" width="160"></el-table-column>
-				<el-table-column prop="state" label="状态" width="160"></el-table-column>
+				<el-table-column prop="state" label="状态" :formatter="cashState" width="160"></el-table-column>
 			</el-table>
 			<!--分页 start-->
 			<!--<el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>-->
@@ -46,13 +45,12 @@ export default {
 		return {
 			newsType: "applet_news",
 			pageIndex: 1,
-			pageSize: 10,
+			pageSize: 20,
 			search: "",
 			tableData: [],
 			state: "",
 			pageTotal: null,
 			currentPage2: 1
-
 		};
 	},
 	// 获取新闻数据
@@ -72,6 +70,14 @@ export default {
 			// console.log(`当前页: ${val}`);
 			this.pageIndex = `${val}`;
 			this.getInfo()
+		},
+		cashState(row) {
+			console.log(row.state)
+			if(row.state == 0) {
+				return '未审核冻结中'
+			} else {
+				return '审核打款了'
+			}
 		},
 		getInfo() {
 			const url = "https://www.zhongjubang.com/test/";

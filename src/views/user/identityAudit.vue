@@ -10,7 +10,10 @@
 				<el-table-column prop="realName" label="真实名字" width="100"></el-table-column>
 				<el-table-column prop="businessCardPic" label="名片照片" width="220">
 					<template scope="scope">
-						<img :src="scope.row.businessCardPic" width="100" height="150" class="head_pic" />
+						<img :src="scope.row.businessCardPic" width="100" height="150" class="head_pic" @click="handlePreview" />
+						<el-dialog :visible.sync="dialogVisible">
+							<img width="100%" :src="scope.row.businessCardPic" alt="">
+						</el-dialog>
 					</template>
 				</el-table-column>
 				<el-table-column prop="nickName" label="昵称"></el-table-column>
@@ -74,6 +77,7 @@ export default {
 	name: "identityAudit",
 	data() {
 		return {
+			dialogVisible: false,
 			state: "",
 			loading: true,
 			states: [
@@ -116,6 +120,10 @@ export default {
 			// console.log(`每页 ${val} 条`);
 			this.pageSize = `${val}`;
 			this.getInfo()
+		},
+		//放大图片
+		handlePreview() {
+			this.dialogVisible = true;
 		},
 		// 修改当前页
 		handleCurrentChange(val) {

@@ -3,15 +3,14 @@
 		<div class="filter-container">
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
-				<el-table-column prop="id" label="订单id" width="180"></el-table-column>
-				<el-table-column prop="userid" label="用户id" width="180"></el-table-column>
-				<el-table-column prop="isDel" label="是否删除" width="180"></el-table-column>
-				<el-table-column prop="state" label="状态" width="180"></el-table-column>
-				<el-table-column prop="phone" label="手机号" width="180"></el-table-column>
+				<el-table-column prop="id" label="id" width="180"></el-table-column>
 				<el-table-column prop="nickname" label="昵称" width="180"></el-table-column>
+				<el-table-column prop="phone" label="手机号" width="180"></el-table-column>
+				
 				<el-table-column prop="createBy" label="创建人" width="180"></el-table-column>
 				<el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
 				<el-table-column prop="vipOrderId" label="订单唯一id" min-width="180"></el-table-column>
+				<el-table-column prop="state" label="状态" width="180" :formatter="vipState"></el-table-column>
             </el-table>
 			<!--分页 start-->
 			<!--<el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>-->
@@ -97,6 +96,14 @@ export default {
 			// console.log(`当前页: ${val}`);
 			this.pageIndex = `${val}`;
 			this.getInfo()
+		},
+		vipState(row) {
+			console.log(row.state)
+			if(row.state == 0) {
+				return '没付款'
+			} else {
+				return '付款了'
+			}
 		},
 		getInfo() {
 			const url = "https://www.zhongjubang.com/test/";

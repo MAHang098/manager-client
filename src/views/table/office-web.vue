@@ -72,7 +72,6 @@ export default {
 			loading: true,
 			centerDialogVisible: false,
 			textarea2: "",
-			
 			temp: {
 				newsContent: "",
 				newsImg: "",
@@ -236,16 +235,8 @@ export default {
 		gotoCreate() {
 			this.$router.replace('/table/inline-edit-table')
 		},
-<<<<<<< HEAD
-		offcialAddNews() {
-			this.$router.push({
-		        path:'/table/addNews',
-		        query:{newsType: '1'}
-	      	})
-=======
 		addNews() {
 			this.$router.replace('/table/addNews');
->>>>>>> 935493ba36a37cce9d2e2af422ab82375d73ba41
 		}
 	}
 };

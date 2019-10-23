@@ -11,9 +11,13 @@
 				<el-table-column prop="newsImg" label="新闻大图" width="200">
 					<!-- 显示图片 -->
 					<template scope="scope">
-						<img :src="scope.row.newsImg" width="180" height="80" class="head_pic" />
+						<img :src="scope.row.newsImg" width="180" height="80" class="head_pic" @click="handlePreview" />
+						<el-dialog :visible.sync="dialogVisible">
+							<img width="100%" :src="scope.row.newsImg" alt="">
+						</el-dialog>
 					</template>
 				</el-table-column>
+				
 				<el-table-column prop="newsQuote" label="新闻简介" ></el-table-column>
 				<el-table-column prop="newsTitle" label="新闻标题"></el-table-column>
 				<el-table-column label="新闻地址">
@@ -64,6 +68,8 @@ export default {
 	name: "complex-table",
 	data() {
 		return {
+			dialogImageUrl: "",
+			dialogVisible: false,
 			newsType: "applet_news",
 			pageIndex: 1,
 			pageSize: 10,
@@ -117,6 +123,11 @@ export default {
 			// console.log(`每页 ${val} 条`);
 			this.pageSize = `${val}`;
 			this.getInfo()
+		},
+		handlePreview(file) {
+			console.log(file);
+			this.dialogImageUrl = file.url;
+			this.dialogVisible = true;
 		},
 		// 修改当前页
 		handleCurrentChange(val) {

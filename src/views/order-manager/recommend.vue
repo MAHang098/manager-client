@@ -3,15 +3,15 @@
 		<div class="filter-container">
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
-				<el-table-column prop="createTime" label="创建时间" min-width="140"></el-table-column>
-				<el-table-column prop="userPhone" label="用户手机" width="140"></el-table-column>
-				<el-table-column prop="name" label="客户名" width="140"></el-table-column>
-				<el-table-column prop="nickname" label="用户昵称" min-width="140"></el-table-column>
-				<el-table-column prop="state" label="审核状态" width="140" :formatter="auditState"></el-table-column>
-				<el-table-column prop="type" label="需求来源" width="140"></el-table-column>
-				<el-table-column prop="userId" label="用户id" width="140"></el-table-column>
-				<el-table-column prop="tpRecommendId" label="推荐订单id" width="140"></el-table-column>
+				<el-table-column prop="tpRecommendId" label="id" width="140"></el-table-column>
+				<el-table-column prop="name" label="客户姓名" width="140"></el-table-column>
+				<el-table-column prop="tpRecommendPhone" label="客户手机" width="140"></el-table-column>
+				
+				<el-table-column prop="type" label="需求来源" width="140" :formatter="requireState"></el-table-column>
 				<el-table-column prop="intention" label="客户欲购买的产品" width="140"></el-table-column>
+				<el-table-column prop="nickname" label="用户姓名" min-width="140"></el-table-column>
+				<el-table-column prop="createTime" label="创建时间" min-width="140"></el-table-column>
+				<el-table-column prop="state" label="审核状态" width="140" :formatter="auditState"></el-table-column>
                 <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
 					<template slot-scope="{row}">
 						<el-button type="primary" size="mini" @click="handleUpdate(row)">修改</el-button>
@@ -35,7 +35,7 @@
 							</el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item label="加多少钱钱" prop="title">
+					<el-form-item label="返现金额" prop="title">
 						<el-input v-model="temp.cost" />
 					</el-form-item>
 					
@@ -143,6 +143,14 @@ export default {
 				return '签约成功'
 			} else {
 				return '签约失败'
+			}
+		},
+		requireState(row) {
+			console.log(row.type)
+			if(row.type == 1) {
+				return '推荐客户'
+			} else {
+				return '推荐订单'
 			}
 		},
 		getInfo() {
