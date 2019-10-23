@@ -1,46 +1,45 @@
 <template>
 	<div class="app-container">
 		<div class="filter-container">
-			<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addNews">添加新闻</el-button>
-			
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
-				<el-table-column prop="newsId" label="ID" width="60"></el-table-column>
-				<!--<Tinymce newsId='ID'></Tinymce>-->
-				<!--<el-table-column prop="newsContent" label="新闻内容" width="340"></el-table-column>-->
-				<el-table-column prop="newsImg" label="新闻大图" width="200">
-					<!-- 显示图片 -->
-					<template scope="scope">
-						<img :src="scope.row.newsImg" width="180" height="80" class="head_pic" />
-					</template>
-				</el-table-column>
-				<el-table-column prop="newsQuote" label="新闻简介" ></el-table-column>
-				<el-table-column prop="newsTitle" label="新闻标题"></el-table-column>
-				<el-table-column label="新闻地址">
-					<template slot-scope="scope">
-						<a v-if="scope.row.url == ''" :href="scope.row.url"  target="_blank" class="buttonText" >
-							{{scope.row.url}}
-						</a>
-						<a v-else :href="scope.row.url"  target="_blank" class="buttonText" >
-							{{(scope.row.url.split('//'))[0] + '//' +  (scope.row.url.split('/'))[2] }}
-						</a>
-					</template>
-				</el-table-column>
-
-				<!-- 删除功能 -->
-				<el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
-					<template slot-scope="{row}">
-						<el-button type="primary" size="mini" @click="handleUpdate(row)" >编辑</el-button>
-						<el-button v-if="row.status!='deleted'" size="mini" type="danger" icon="el-icon-delete"  @click="delNews(row)">删除</el-button>
-					</template>
-				</el-table-column>
-			</el-table>
-
+				<el-table-column prop="id" label="订单id" width="200"></el-table-column>
+				<el-table-column prop="userid" label="用户id" width="200"></el-table-column>
+				<el-table-column prop="isDel" label="是否删除" width="200"></el-table-column>
+				<el-table-column prop="state" label="状态" width="200"></el-table-column>
+				<el-table-column prop="phone" label="手机号" width="200"></el-table-column>
+				<el-table-column prop="nickname" label="昵称" width="200"></el-table-column>
+				<el-table-column prop="createBy" label="创建人" width="200"></el-table-column>
+				<el-table-column prop="createTime" label="创建时间" width="200"></el-table-column>
+				<el-table-column prop="vipOrderId" label="订单唯一id" min-width="200"></el-table-column>
+            </el-table>
 			<!--分页 start-->
+			<!--<el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>-->
 			<div class="block">
-				<el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[10, 20, 30]" :page-size="pageSize" layout="sizes, prev, pager, next" :total="pageTotal">
+                <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[10, 20, 30]" :page-size="100" layout="sizes, prev, pager, next" :total="pageTotal">
 				</el-pagination>
 			</div>
+            <!-- 添加新闻弹框  -->
+			
+			<el-dialog :visible.sync="dialogFormVisible">
+				<el-form ref="dataForm" label-position="left" :model="temp" label-width="100px" style="width: 400px; margin-left:50px;">
+					<el-form-item label="状态" prop="title">
+						<!-- <el-input v-model="temp.state" /> -->
+						<el-select v-model="temp.state" placeholder="请选择">
+							<el-option v-for="item in states" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item label="加多少钱钱" prop="title">
+						<el-input v-model="temp.cost" />
+					</el-form-item>
+					
+				</el-form>
+				<div slot="footer" class="dialog-footer">
+					<el-button @click="dialogFormVisible = false">取消</el-button>
+					<el-button type="primary" @click="sendData()">确认</el-button>
+				</div>
+			</el-dialog>
 			<!--分页 end-->
 		</div>
 	</div>
@@ -58,59 +57,33 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import https from "../../../https.js"; // 注意用自己的路径
-// import Tinymce from "/components/Tinymce"
-// import Tinymce from 'components/Tinymce'
+
 export default {
-	name: "office-web",
+	name: "Recommand",
 	data() {
 		return {
-			newsType: "official_news",
+			loading: true,
+			
 			pageIndex: 1,
 			pageSize: 10,
 			search: "",
 			tableData: [],
-			loading: true,
-			centerDialogVisible: false,
-			textarea2: "",
-			
-			temp: {
-				newsContent: "",
-				newsImg: "",
-				newsQuote: "",
-				newsTitle: "",
-				newsTypeId: "",
-				url: ""
+			state: "",
+			pageTotal: null,
+            currentPage2: 1,
+            tpRecommendId: '',
+            dialogFormVisible: false,
+            temp: {
+				state: "",
+				cost: ""
 			},
-			temp2: {
-				newsId: "",
-				newsContent: "",
-				newsImg: "",
-				newsQuote: "",
-				newsTitle: "",
-				newsTypeId: "",
-				url: ""
-			},
-			newsContent: "",
-			dialogStatus: "",
-			// dialogFormVisible: false,
-			rules: {
-				newsTitle: [
-					{ required: true, message: "title is required", trigger: "blur" }
-				]
-			},
-			//   pageSize: [10, 20, 30]
-			pageTotal: 1,
-			currentPage2: 1,
+
 		};
 	},
-	// activated() {
-	// 	this.getInfo();
-	// },
-	
 	// 获取新闻数据
 	mounted() {
-		this.getInput();
 		this.getInfo();
+		this.getInput();
 	},
 	methods: {
 		// 修改每页条数
@@ -129,21 +102,22 @@ export default {
 			const url = "https://www.zhongjubang.com/test/";
 			
 			var parmas = {
-				newsType: this.newsType,
+				state: '',
 				pageIndex: this.pageIndex,
-				pageSize: this.pageSize,
-				search: this.search
+				pageSize: this.pageSize
 			}
 			this.loading = true;
-			this.Axios.post(url + "/controller/offcialweb/getoffcialwebnews", parmas)
+			this.Axios.post(url + "/admin/applet/getuserviprecommendbystate", parmas)
 				.then(res => {
+					// console.log(res);
 					if (res.status == 200) {
 						this.loading = false;
 						const tableData = res.data.data.dataList;
-						//   console.log(tableData);
+						
 						this.tableData = tableData;
 						//   console.log(tableData);
 						this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
+
 					} else {
 						console.log(res.code);
 						if (res.code == 400) {
@@ -173,28 +147,46 @@ export default {
 						}
 					}
 				});
-		},
+        },
 		getInput() {
 			const item = this.textarea2;
 			console.log(item);
 		},
-		delNews(row) {
-			this.$confirm("此操作将永久删除, 是否继续?", "提示", {
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
-				type: "warning"
-			}).then(() => {
-				const url = "http://www.zhongjubang.com/test/";
+		handleUpdate(row) {
+            console.log(row.tpRecommendId)
+            this.tpRecommendId = row.tpRecommendId
+            this.dialogFormVisible = true
+            this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+            })
+        },
+        sendData(){
+            console.log(this.tpRecommendId)
+            const url = "https://www.zhongjubang.com/test/";
+			var parmas = {
+				state: this.temp.state,
+                tpRecommendId: this.tpRecommendId,
+                cost: this.temp.cost
+			}
+			this.Axios.post(url + "admin/applet/updateuserrecommendstate", parmas)
+				.then(res => {
+					// console.log(res);
+					
 
-				this.Axios.post(url + "/admin/offcial/delnews", {
-					newsId: row.newsId
-				}).then(res => {
 					if (res.status == 200) {
-						this.$message.success('删除成功');
-						this.centerDialogVisible = false
-						this.pageIndex = 1;
-						this.getInfo();
-						this.currentPage2 = 1;
+						// const tableData = res.data.data.dataList;
+						// this.tableData = tableData;
+                        // this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
+                        console.log('上传成功')
+						this.dialogFormVisible = false
+                        this.$notify({
+                            title: '成功',
+                            message: '更新成功',
+                            type: 'success',
+                            duration: 2000
+                        })
+						this.getInfo()
+
 					} else {
 						console.log(res.code);
 						if (res.code == 400) {
@@ -224,25 +216,9 @@ export default {
 						}
 					}
 				});
-			})
-		},
-		handleUpdate(row) {
-			this.$router.push({
-		        path:'/table/editNews',
-		        query:{newsId:row.newsId}
-	      	})
-	// 		this.$router.push({
-	//         	name:'editBrand',
-	//         	params:{data:row}
-	//       	})
-		},
+        }
 		
-		gotoCreate() {
-			this.$router.replace('/table/inline-edit-table')
-		},
-		addNews() {
-			this.$router.replace('/table/addNews');
-		}
+		
 	}
 };
 </script>

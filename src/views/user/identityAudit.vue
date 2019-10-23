@@ -6,20 +6,23 @@
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
 				<!--<el-table-column prop="newsId" label="ID" width="40"></el-table-column>-->
 				<!--<Tinymce newsId='ID'></Tinymce>-->
+				<el-table-column prop="userId" label="用户ID" width="100"></el-table-column>
 				<el-table-column prop="realName" label="真实名字" width="100"></el-table-column>
 				<el-table-column prop="businessCardPic" label="名片照片" width="220">
 					<template scope="scope">
 						<img :src="scope.row.businessCardPic" width="100" height="150" class="head_pic" />
 					</template>
 				</el-table-column>
-				
-				
 				<el-table-column prop="nickName" label="昵称"></el-table-column>
 				<el-table-column prop="companyName" label="公司名"> </el-table-column>
-				<el-table-column prop="IdCardSubmitTime" label="提交时间"></el-table-column>
-				<el-table-column prop="IdCardRewardStatus" label="奖励状态" :formatter="rewardState"></el-table-column>
-				<el-table-column prop="IdCardCheckStatus" label="审核状态" :formatter="auditState"></el-table-column>
-				
+				<el-table-column prop="businessCardSubmitTime" label="提交时间"></el-table-column>
+				<el-table-column prop="businessCardCheckStatus" label="奖励状态" :formatter="rewardState"></el-table-column>
+				<el-table-column prop="businessCardCheckStatus" label="审核状态" :formatter="auditState"></el-table-column>
+				<el-table-column label="状态修改" align="center" width="180" class-name="small-padding fixed-width">
+					<template slot-scope="{row}">
+						<el-button type="primary" size="mini" @click="handleUpdate(row)">修改</el-button>
+					</template>
+				</el-table-column>
 			</el-table>
 
 		
@@ -30,6 +33,25 @@
 				</el-pagination>
 			</div>
 			<!--分页 end-->
+
+			<!-- 修改实名状态  -->
+			
+			<el-dialog :visible.sync="dialogFormVisible">
+				<el-form ref="dataForm" label-position="left" :model="temp" label-width="100px" style="width: 400px; margin-left:50px;">
+					<el-form-item label="状态" prop="title">
+						<!-- <el-input v-model="temp.state" /> -->
+						<el-select v-model="temp.state" placeholder="请选择">
+							<el-option v-for="item in states" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
+					</el-form-item>
+					
+				</el-form>
+				<div slot="footer" class="dialog-footer">
+					<el-button @click="dialogFormVisible = false">取消</el-button>
+					<el-button type="primary" @click="sendData()">确认</el-button>
+				</div>
+			</el-dialog>
 		</div>
 	</div>
 </template>
@@ -52,43 +74,32 @@ export default {
 	name: "table",
 	data() {
 		return {
+			state: "",
+			loading: true,
+			states: [
+				{
+					value: '1',
+					label: '待审核'
+				},
+				{
+					value: '2',
+					label: '已审核'
+				},
+				{
+					value: '3',
+					label: '审核不通过'
+				}
+			],
 			newsType: "applet_news",
 			pageIndex: 1,
 			pageSize: 10,
 			search: "",
 			tableData: [],
-			loading: true,
-			// textarea2: "",
-			// textMap: {
-			// 	update: "Edit",
-			// 	create: "Create"
-			// },
-			// temp: {
-			// 	newsContent: "",
-			// 	newsImg: "",
-			// 	newsQuote: "",
-			// 	newsTitle: "",
-			// 	newsTypeId: "",
-			// 	url: ""
-			// },
-			// temp2: {
-			// 	newsId: "",
-			// 	newsContent: "",
-			// 	newsImg: "",
-			// 	newsQuote: "",
-			// 	newsTitle: "",
-			// 	newsTypeId: "",
-			// 	url: ""
-			// },
-			// newsContent: "",
-			// dialogStatus: "",
-			// dialogFormVisible: false,
-			// rules: {
-			// 	newsTitle: [
-			// 		{ required: true, message: "title is required", trigger: "blur" }
-			// 	]
-			// },
-			//   pageSize: [10, 20, 30]
+			temp: {
+				state: ""
+			},
+			dialogFormVisible: false,
+			
 			pageTotal: 1,
 			currentPage2: 1,
 
@@ -118,9 +129,10 @@ export default {
 		},
 		// 审核状态
 		auditState(row) {
-			if(row.IdCardCheckStatus == 1) {
+			console.log(row.businessCardCheckStatus)
+			if(row.businessCardCheckStatus == 1) {
 				return '待审核'
-			} else if(row.IdCardCheckStatus == 2) {
+			} else if(row.businessCardCheckStatus == 2) {
 				return '已审核'
 			} else {
 				return '审核不通过'
@@ -180,133 +192,72 @@ export default {
 		getInput() {
 			const item = this.textarea2;
 		},
-	// 	resetTemp() {
-	// 		this.temp = {
-	// 			newsContent: "",
-	// 			newsImg: "",
-	// 			newsQuote: "",
-	// 			newsTitle: "",
-	// 			newsTypeId: "",
-	// 			url: ""
-	// 		};
-	// 	},
-	// 	resetTemp2() {
-	// 		this.temp2 = {
-	// 			newsId: "",
-	// 			newsContent: "",
-	// 			newsImg: "",
-	// 			newsQuote: "",
-	// 			newsTitle: "",
-	// 			newsTypeId: "",
-	// 			url: ""
-	// 		};
-	// 	},
-	// 	handleCreate() {
-	// 		this.resetTemp();
-	// 		this.dialogStatus = "create";
-	// 		this.dialogFormVisible = true;
-	// 		this.$nextTick(() => {
-	// 			this.$refs["dataForm"].clearValidate();
-	// 		});
-	// 	},
-	// 	createData() {
-	// 		this.$refs["dataForm"].validate(valid => {
-	// 			if (valid) {
-	// 				// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-	// 				const url = "http://www.zhongjubang.com/test/";
+		handleUpdate(row) {
+            console.log(row.userId)
+            this.userId = row.userId
+            this.dialogFormVisible = true
+            // this.$nextTick(() => {
+            //     this.$refs['dataForm'].clearValidate()
+            // })
+		},
+		sendData(){
+            console.log(this.userId)
+            console.log(this.temp.state)
+            const url = "https://www.zhongjubang.com/test/";
+			var parmas = {
+				state: this.temp.state,
+                userId: this.userId
+			}
+			this.Axios.post(url + "/admin/applet/updateusernamecardstate", parmas)
+				.then(res => {
+					// console.log(res);
+					
 
-	// 				this.Axios.post(url + "/admin/offcial/addnews", {
-	// 					newsContent: this.temp.newsContent,
-	// 					newsImg: this.temp.newsImg,
-	// 					newsQuote: this.temp.newsQuote,
-	// 					newsTitle: this.temp.newsTitle,
-	// 					newsTypeId: this.temp.newsTypeId,
-	// 					url: this.temp.url
-	// 				}).then(res => {
-	// 					console.log(res);
-	// 					if (res.status == 200) {
-	// 						console.log("上传成功");
-	// 					}
-	// 				});
-	// 			}
-	// 		});
-	// 	},
-	// 	delNews(row) {
-	// 		console.log(row.newsId);
+					if (res.status == 200) {
+						// const tableData = res.data.data.dataList;
+						// this.tableData = tableData;
+                        // this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
+                        console.log('修改成功')
+						this.dialogFormVisible = false
+                        this.$notify({
+                            title: '成功',
+                            message: '更新成功',
+                            type: 'success',
+                            duration: 2000
+                        })
+						this.getInfo()
 
-	// 		const url = "http://www.zhongjubang.com/test/";
-
-	// 		this.Axios.post(url + "/admin/offcial/delnews", {
-	// 			newsId: row.newsId
-	// 		}).then(res => {
-	// 			console.log(res);
-	// 			if (res.status == 200) {
-	// 				console.log("成功删除");
-	// 			} else {
-	// 				console.log(res.code);
-	// 				if (res.code == 400) {
-	// 					console.log("请求异常");
-	// 				} else if (res.code == 401) {
-	// 					console.log("参数为空");
-	// 				} else if (res.code == 402) {
-	// 					console.log("对象已存在");
-	// 				} else if (res.code == 403) {
-	// 					console.log("电话号码已存在");
-	// 				} else if (res.code == 404) {
-	// 					console.log("对象不存在(查询对象时用)");
-	// 				} else if (res.code == 405) {
-	// 					console.log("短信、邮件、消息发送失败");
-	// 				} else if (res.code == 406) {
-	// 					console.log("预期相反最终结果");
-	// 				} else if (res.code == 407) {
-	// 					console.log("验证、认证失败");
-	// 				} else if (res.code == 408) {
-	// 					console.log("参数错误");
-	// 				} else if (res.code == 411) {
-	// 					console.log("数据为空||结果为空||对象为空 (查询结果数据时用)");
-	// 				} else if (res.code == 421) {
-	// 					console.log("token过期或者无效");
-	// 				} else if (res.code == 422) {
-	// 					console.log("系统错误");
-	// 				}
-	// 			}
-	// 		});
-	// 	},
-	// 	handleUpdate(row) {
-	// 		this.$router.push({
-	// 	        path:'../../components/editNews',
-	// 	        query:{nameId:row.newsId}
-	//       	})
-	// 	},
-	// 	updateData() {
-	// 		this.$refs['dataForm'].validate((valid) => {
-	// 			if (valid) {
-	// 				const tempData = Object.assign({}, this.temp2)
-	// 				const url = 'http://www.zhongjubang.com/test/'
-	// 				// console.log(tempData)
-	// 				this.Axios.post(url + "/admin/applet/updatenews", {
-	// 					newsContent: this.temp2.newsContent,
-	// 					newsImg: this.temp2.newsImg,
-	// 					newsQuote: this.temp2.newsQuote,
-	// 					newsTitle: this.temp2.newsTitle,
-	// 					newsTypeId: this.temp2.newsTypeId,
-	// 					url: this.temp2.url
-	// 				}).then(res => {
-	// 					console.log(res);
-	// 					if (res.status == 200) {
-	// 						console.log("上传成功");
-	// 					}
-	// 				});
-	// 			}
-	// 		})
-
-	// 	},
-	// 	gotoCreate() {
-	// 		this.$router.replace('/table/inline-edit-table')
-	// 	},
-	// 	addNews() {
-	// 		this.$router.replace('../../components/addNews');
-	// 	}
+					} else {
+						console.log(res.code);
+						if (res.code == 400) {
+							console.log("请求异常");
+						} else if (res.code == 401) {
+							console.log("参数为空");
+						} else if (res.code == 402) {
+							console.log("对象已存在");
+						} else if (res.code == 403) {
+							console.log("电话号码已存在");
+						} else if (res.code == 404) {
+							console.log("对象不存在(查询对象时用)");
+						} else if (res.code == 405) {
+							console.log("短信、邮件、消息发送失败");
+						} else if (res.code == 406) {
+							console.log("预期相反最终结果");
+						} else if (res.code == 407) {
+							console.log("验证、认证失败");
+						} else if (res.code == 408) {
+							console.log("参数错误");
+						} else if (res.code == 411) {
+							console.log("数据为空||结果为空||对象为空 (查询结果数据时用)");
+						} else if (res.code == 421) {
+							console.log("token过期或者无效");
+						} else if (res.code == 422) {
+							console.log("系统错误");
+						}
+					}
+				});
+        },
+	
 	}
 };
 </script>

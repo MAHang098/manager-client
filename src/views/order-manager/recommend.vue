@@ -2,11 +2,11 @@
 	<div class="app-container">
 		<div class="filter-container">
 			<!--渲染数据 start-->
-			<el-table :data="tableData" border style="width: 100%" class="taba">
-				<el-table-column prop="createTime" label="创建时间" width="140"></el-table-column>
-				<el-table-column prop="userPhone" label="用户手机" min-width="140"></el-table-column>
+			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
+				<el-table-column prop="createTime" label="创建时间" min-width="140"></el-table-column>
+				<el-table-column prop="userPhone" label="用户手机" width="140"></el-table-column>
 				<el-table-column prop="name" label="客户名" width="140"></el-table-column>
-				<el-table-column prop="nickname" label="用户昵称" width="140"></el-table-column>
+				<el-table-column prop="nickname" label="用户昵称" min-width="140"></el-table-column>
 				<el-table-column prop="state" label="审核状态" width="140"></el-table-column>
 				<el-table-column prop="type" label="需求来源" width="140"></el-table-column>
 				<el-table-column prop="userId" label="用户id" width="140"></el-table-column>
@@ -24,7 +24,7 @@
                 <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[10, 20, 30]" :page-size="100" layout="sizes, prev, pager, next" :total="pageTotal">
 				</el-pagination>
 			</div>
-            <!-- 添加新闻弹框  -->
+            <!-- 修改订单弹框  -->
 			
 			<el-dialog :visible.sync="dialogFormVisible">
 				<el-form ref="dataForm" label-position="left" :model="temp" label-width="100px" style="width: 400px; margin-left:50px;">
@@ -67,6 +67,7 @@ export default {
 	name: "Recommand",
 	data() {
 		return {
+			loading: true,
 			states: [
 				{
 					value: '1',
@@ -136,10 +137,12 @@ export default {
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize
 			}
+			this.loading = true;
 			this.Axios.post(url + "/admin/applet/getuserrecommendbystate", parmas)
 				.then(res => {
 					// console.log(res);
 					if (res.status == 200) {
+						this.loading = false;
 						const tableData = res.data.data.dataList;
 						
 						this.tableData = tableData;
@@ -213,7 +216,7 @@ export default {
                             type: 'success',
                             duration: 2000
                         })
-						getInfo()
+						this.getInfo()
 
 					} else {
 						console.log(res.code);

@@ -99,7 +99,6 @@ export default {
 				pageSize: this.pageSize,
 			}
 			this.loading = true;
-			console.log(111)
 			this.Axios.post(url + "/admin/applet/getbrandlist", parmas)
 				.then(res => {
 
