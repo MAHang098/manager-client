@@ -224,7 +224,7 @@ export default {
 						}
 					}
 				});
-			})
+			}).catch(()=>{});
 		},
 		handleUpdate(row) {
 			this.$router.push({
