@@ -9,14 +9,14 @@
 				</div>
 			</el-form-item>
 			<el-form-item label="品牌图" prop="brandImg">
-				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
+				<!--<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
 				 action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="uploadSuccess"
 				 :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :limit="1" :on-exceed="handleExceed" 
 				 :file-list="fileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-				</el-upload>
-				<!--<el-upload
+				</el-upload>-->
+				<el-upload
 				action="http://www.zhongjubang.com/test/upload"
 				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
 				:on-preview="handlePreview"
@@ -26,17 +26,27 @@
 				</el-upload>
 				<el-dialog :visible.sync="dialogVisible">
 				<img width="100%" :src="dialogImageUrl" alt="">
-				</el-dialog>-->
+				</el-dialog>
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
-				<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
+				<!--<el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
 				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
 				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getlogfileName"  :on-success="uploadSuccessLog"
 				:multiple="false" :limit="1" :on-exceed="handleExceed" :file-list="logfileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+				</el-upload>-->
+				<el-upload
+				action="http://www.zhongjubang.com/test/upload"
+				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
+				:on-preview="handlePreview"
+				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccessLog" :limit="1" 
+				:on-exceed="handleExceed" :file-list="logfileList" :before-upload="beforeAvatarUpload">
+				<i class="el-icon-plus"></i>
 				</el-upload>
-				
+				<el-dialog :visible.sync="dialogVisible">
+				<img width="100%" :src="dialogImageUrl" alt="">
+				</el-dialog>
 			</el-form-item>
 			<el-form-item label="品牌喜欢人数" prop="brandLike">
 				<el-input v-model="temp.brandLike" />
@@ -227,7 +237,6 @@ export default {
 			// 取到路由带过来的参数
 			var routerParams = this.$route.query.nameId
 			// 将数据放在当前组件的数据内
-			console.log("传来的参数==" + routerParams)
 			this.textareText = routerParams
 			// this.temp.newsId = routerParams
 		},
@@ -241,7 +250,6 @@ export default {
         },
 		// 品牌图上传成功
 		uploadSuccess(response, file, fileList) {
-			console.log(response)
 			if(response.code == 200) {
 				let obj = {
 					name: response.data.fileName
@@ -306,8 +314,6 @@ export default {
 		// 	console.log(file, fileList);
 		// },
 		handlePictureCardPreview(file) {
-			console.log(file.name);
-			// console.log(file.url.name)
 			this.dialogImageUrl = file.url;
 			this.dialogVisible = true;
 		},

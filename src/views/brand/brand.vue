@@ -3,7 +3,7 @@
 		<div class="filter-container">
 			<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addBrand">添加品牌</el-button>
 			<!--渲染数据 start-->
-			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading" >
+			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading"  height="650">
 				<el-table-column prop="id" label="品牌id" width="80"></el-table-column>
 				<!--<el-table-column prop="brandTypeId" label="品牌类型id" width="100"></el-table-column>-->
 				
@@ -99,7 +99,6 @@ export default {
 				pageSize: this.pageSize,
 			}
 			this.loading = true;
-			console.log(111)
 			this.Axios.post(url + "/admin/applet/getbrandlist", parmas)
 				.then(res => {
 

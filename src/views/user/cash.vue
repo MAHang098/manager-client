@@ -83,14 +83,9 @@ export default {
 			}
 			this.Axios.post(url + "admin/applet/getuserwithdraw", parmas)
 				.then(res => {
-					// console.log(res);
-					
-
 					if (res.status == 200) {
 						const tableData = res.data.data.dataList;
-						
 						this.tableData = tableData;
-						//   console.log(tableData);
 						this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
 
 					} else {
@@ -125,11 +120,7 @@ export default {
 		},
 		getInput() {
 			const item = this.textarea2;
-			console.log(item);
-		},
-		
-		
-		
+		}
 	}
 };
 </script>

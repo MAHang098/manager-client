@@ -260,19 +260,14 @@ export default {
 		        path:'../../table/editNews',
 		        query:{newsId:row.newsId}
 	      	})
-	// 		this.$router.push({
-	//         	name:'editBrand',
-	//         	params:{data:row}
-	//       	})
 		},
 		gotoCreate() {
 			this.$router.replace('/table/inline-edit-table')
 		},
 		offcialAddNews() {
-			// this.$router.replace('../../table/addNews');
 			this.$router.push({
 		        path:'/table/addNews',
-		//         query:{newsType: '1'}
+		        query:{newsType: '1'}
 	      	})
 		}
 	}

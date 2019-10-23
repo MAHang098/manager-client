@@ -174,7 +174,6 @@ export default {
 		},
 		getInput() {
 			const item = this.textarea2;
-			console.log(item);
 		},
 		delNews(row) {
 			this.$confirm("此操作将永久删除, 是否继续?", "提示", {
@@ -230,37 +229,13 @@ export default {
 		        query:{newsId:row.newsId}
 	      	})
 		},
-		// updateData() {
-		// 	this.$refs['dataForm'].validate((valid) => {
-		// 		if (valid) {
-		// 			const tempData = Object.assign({}, this.temp2)
-		// 			const url = 'http://www.zhongjubang.com/test/'
-		// 			// console.log(tempData)
-		// 			this.Axios.post(url + "/admin/applet/updatenews", {
-		// 				newsContent: this.temp2.newsContent,
-		// 				newsImg: this.temp2.newsImg,
-		// 				newsQuote: this.temp2.newsQuote,
-		// 				newsTitle: this.temp2.newsTitle,
-		// 				newsTypeId: this.temp2.newsTypeId,
-		// 				url: this.temp2.url
-		// 			}).then(res => {
-		// 				console.log(res);
-		// 				if (res.status == 200) {
-		// 					console.log("上传成功");
-		// 				}
-		// 			});
-		// 		}
-		// 	})
-
-		// },
 		gotoCreate() {
 			this.$router.replace('/table/inline-edit-table')
 		},
 		addNews() {
-			// this.$router.replace('/table/addNews');
 			this.$router.push({
 		        path:'/table/addNews',
-		//         query:{newsType: '2'}
+		        query:{newsType: '2'}
 	      	})
 		}
 	}

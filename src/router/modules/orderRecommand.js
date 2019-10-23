@@ -4,7 +4,7 @@ const orderRecommand = {
   path: '/order-recommand',
   component: Layout,
   redirect: 'noRedirect',
-  name: 'ComponentDemo',
+  name: 'orderRecommand',
   meta: {
     title: '订单管理',
     icon: 'component'

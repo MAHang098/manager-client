@@ -23,14 +23,25 @@
 				</el-dialog>
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
-				<el-upload class="upload-demo"  accept="image/jpeg,image/jpg,image/png" 
+				<!--<el-upload class="upload-demo"  accept="image/jpeg,image/jpg,image/png" 
 				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
-				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getlogfileName" 
+				:on-remove="handleRemoveLog" :before-remove="beforeRemove" :on-progress="getlogfileName" 
 				:multiple="false" :on-success="uploadSuccessLog" :limit="1" :on-exceed="handleExceed" :file-list="logfileList"
 				:before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+				</el-upload>-->
+				<el-upload
+				action="http://www.zhongjubang.com/test/upload"
+				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
+				:on-preview="handlePreview"
+				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccessLog" :limit="1" 
+				:on-exceed="handleExceed" :file-list="logfileList" :before-upload="beforeAvatarUpload">
+				<i class="el-icon-plus"></i>
 				</el-upload>
+				<el-dialog :visible.sync="dialogVisible">
+				<img width="100%" :src="dialogImageUrl" alt="">
+				</el-dialog>
 			</el-form-item>
 			<el-form-item label="品牌喜欢人数" prop="brandLike">
 				<el-input v-model="temp.brandLike" />
@@ -214,12 +225,22 @@ export default {
 		handleChange(file, fileList) {
         	this.fileList = fileList.slice(-3);
       	},
+		  // 移除品牌图
 		handleRemove(file, fileList) {
 			// console.log(fileList);
-			console.log(file)
+			// console.log(file)
+			this.fileList.forEach((item, index) => {
+				if(file.name == this.fileList[index].name && file.url == this.fileList[index].url) {
+					this.fileList.splice(index, 1);
+				}
+			})
+		},
+		// 移除品牌图标
+		handleRemoveLog(file, fileList) {
+			this.logfileList = [];
 		},
 		handlePreview(file) {
-			console.log(file);
+			// console.log(file);
 		},
 		handleExceed(files, fileList) {
 			// this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -227,7 +248,7 @@ export default {
 		},
 		// 设置上传图片格式
 		beforeAvatarUpload(file) {
-			console.log(file)
+			// console.log(file)
 			var testmsg = /^image\/(jpeg|png|jpg)$/.test(file.type)
 			if (!testmsg) {
 				this.$message.error('上传图片格式不对!')
@@ -249,10 +270,10 @@ export default {
            
 		},
 		handleRemove(file, fileList) {
-			console.log(file, fileList);
+			// console.log(file, fileList);
 		},
 		handlePictureCardPreview(file) {
-			console.log(file.name);
+			// console.log(file.name);
 			// console.log(file.url.name)
 			this.dialogImageUrl = file.url;
 			this.dialogVisible = true;
@@ -262,8 +283,8 @@ export default {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
 					var url = this.url;
-					console.log(this.logfileList.name)
-					console.log(this.fileList.name)
+					// console.log(this.logfileList.name)
+					// console.log(this.fileList.name)
 					// 判断新闻内容是否为空
 					if(this.value == '') {
 						 this.$message.error('请填写品牌详情');

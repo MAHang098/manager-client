@@ -4,7 +4,7 @@ const brandRouter = {
   path: '/brand',
   component: Layout,
   redirect: 'noRedirect',
-  name: 'ComponentDemo',
+  name: 'Brand',
   meta: {
     title: '品牌管理',
     icon: 'component'

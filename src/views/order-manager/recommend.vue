@@ -130,7 +130,6 @@ export default {
 		},
 		getInfo() {
 			const url = "https://www.zhongjubang.com/test/";
-			
 			var parmas = {
 				state: '',
 				pageIndex: this.pageIndex,
@@ -138,12 +137,9 @@ export default {
 			}
 			this.Axios.post(url + "/admin/applet/getuserrecommendbystate", parmas)
 				.then(res => {
-					// console.log(res);
 					if (res.status == 200) {
 						const tableData = res.data.data.dataList;
-						
 						this.tableData = tableData;
-						//   console.log(tableData);
 						this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
 
 					} else {
@@ -178,10 +174,8 @@ export default {
         },
 		getInput() {
 			const item = this.textarea2;
-			console.log(item);
 		},
 		handleUpdate(row) {
-            console.log(row.tpRecommendId)
             this.tpRecommendId = row.tpRecommendId
             this.dialogFormVisible = true
             this.$nextTick(() => {
@@ -189,7 +183,6 @@ export default {
             })
         },
         sendData(){
-            console.log(this.tpRecommendId)
             const url = "https://www.zhongjubang.com/test/";
 			var parmas = {
 				state: this.temp.state,
@@ -198,14 +191,9 @@ export default {
 			}
 			this.Axios.post(url + "admin/applet/updateuserrecommendstate", parmas)
 				.then(res => {
-					// console.log(res);
 					
 
 					if (res.status == 200) {
-						// const tableData = res.data.data.dataList;
-						// this.tableData = tableData;
-                        // this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
-                        console.log('上传成功')
 						this.dialogFormVisible = false
                         this.$notify({
                             title: '成功',
@@ -213,7 +201,7 @@ export default {
                             type: 'success',
                             duration: 2000
                         })
-						getInfo()
+						this.getInfo()
 
 					} else {
 						console.log(res.code);
@@ -245,7 +233,6 @@ export default {
 					}
 				});
         }
-		
 		
 	}
 };
