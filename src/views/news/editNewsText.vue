@@ -165,7 +165,7 @@ export default {
 	computed: {
 		containerWidth() {
 			const width = this.width;
-			if (/^[\d]+(\.[\d]+)?$/.api(width)) {
+			if (/^[\d]+(\.[\d]+)?$/.test(width)) {
 				// matches `100`, `'100'`
 				return `${width}px`;
 			}
@@ -290,7 +290,7 @@ export default {
 			+ '(/[0-9a-z_!~*\'().;?:@&=+$,%#-]+)+/?)$'; 
 			var re=new RegExp(strRegex); 
 			//re.api() 
-			if (!re.api(this.temp.url)) { 
+			if (!re.test(this.temp.url)) { 
 				this.$message.error('你输入的地址无效'); 
 				return false;
 			} 

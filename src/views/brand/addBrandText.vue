@@ -163,7 +163,7 @@ export default {
 	computed: {
 		containerWidth() {
 			const width = this.width;
-			if (/^[\d]+(\.[\d]+)?$/.api(width)) {
+			if (/^[\d]+(\.[\d]+)?$/.test(width)) {
 				// matches `100`, `'100'`
 				return `${width}px`;
 			}
@@ -243,8 +243,8 @@ export default {
 		// 设置上传图片格式
 		beforeAvatarUpload(file) {
 			// console.log(file)
-			var apimsg = /^image\/(jpeg|png|jpg)$/.api(file.type)
-			if (!apimsg) {
+			var testmsg = /^image\/(jpeg|png|jpg)$/.test(file.type)
+			if (!testmsg) {
 				this.$message.error('上传图片格式不对!')
 				return
 			}
