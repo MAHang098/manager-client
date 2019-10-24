@@ -1,6 +1,12 @@
 <template>
 	<div class="app-container">
 		<div class="filter-container">
+			<!-- 搜索框 start -->
+			<div class="demo-input-size">
+				<el-input placeholder="请输入姓名或手机" prefix-icon="el-icon-search" v-model="searchInput"  @keyup.enter.native="handleClick" clearable class="elInput"></el-input>
+				<el-button  style="margin-left: 10px;" type="primary"  icon="el-icon-search"  @click="handleClick">搜索</el-button>
+			</div>
+			<!-- 搜索框 end -->
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading">
 				<el-table-column prop="tpRecommendId" label="id" width="140"></el-table-column>
@@ -68,6 +74,7 @@ export default {
 	data() {
 		return {
 			loading: true,
+			searchInput: '',
 			states: [
 				{
 					value: '1',
@@ -117,6 +124,11 @@ export default {
 		this.getInput();
 	},
 	methods: {
+		// 键盘回车事件/搜索
+		handleClick() {
+			this.search = this.searchInput;
+			this.getInfo();
+		},
 		// 修改每页条数
 		handleSizeChange(val) {
 			// console.log(`每页 ${val} 条`);
@@ -130,7 +142,6 @@ export default {
 			this.getInfo()
 		},
 		auditState(row) {
-			console.log(row.state)
 			if(row.state == 1) {
 				return '待处理'
 			} else if(row.state == 2) {
@@ -146,7 +157,6 @@ export default {
 			}
 		},
 		requireState(row) {
-			console.log(row.type)
 			if(row.type == 1) {
 				return '推荐客户'
 			} else {
@@ -157,6 +167,7 @@ export default {
 			const url = "https://www.zhongjubang.com/api/";
 			var parmas = {
 				state: '',
+				search: this.search,
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize
 			}
@@ -268,5 +279,9 @@ export default {
 <style>
 	.block {
 		margin-top: 20px;
+	}
+	.elInput {
+		width: 180px;
+		margin-bottom: 10px;
 	}
 </style>
