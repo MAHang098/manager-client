@@ -91,7 +91,7 @@ export default {
 		},
 		// 获取品牌列表
 		getInfo() {
-			const url = "https://www.zhongjubang.com/test/";
+			const url = "https://www.zhongjubang.com/api/";
 			let parmas = {
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize,
@@ -145,7 +145,7 @@ export default {
 				cancelButtonText: "取消",
 				type: "warning"
 			}).then(() => {
-				const url = "http://www.zhongjubang.com/test/";
+				const url = "http://www.zhongjubang.com/api/";
 
 				this.Axios.post(url + "/admin/applet/delbrand", {
 					brandId: id

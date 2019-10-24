@@ -147,7 +147,7 @@ export default {
 			}
 		},
 		getInfo() {
-			const url = "https://www.zhongjubang.com/test/";
+			const url = "https://www.zhongjubang.com/api/";
 			var parmas = {
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize
@@ -211,7 +211,7 @@ export default {
 		sendData(){
             console.log(this.userId)
             console.log(this.temp.state)
-            const url = "https://www.zhongjubang.com/test/";
+            const url = "https://www.zhongjubang.com/api/";
 			var parmas = {
 				state: this.temp.state,
                 userId: this.userId

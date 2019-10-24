@@ -11,7 +11,7 @@
 			<el-form-item label="品牌图" prop="brandImg">
 				
 				<el-upload
-				action="http://www.zhongjubang.com/test/upload"
+				action="http://www.zhongjubang.com/api/upload"
 				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
 				:on-preview="handlePreview"
 				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccess" :limit="1" 
@@ -24,7 +24,7 @@
 			</el-form-item>
             <el-form-item label="品牌图标" prop="brandIcon">
 				<el-upload
-				action="http://www.zhongjubang.com/test/upload"
+				action="http://www.zhongjubang.com/api/upload"
 				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
 				:on-preview="handlePreview"
 				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccessLog" :limit="1" 
@@ -116,7 +116,7 @@ export default {
 	
 	data() {
 		return {
-			url: "https://www.zhongjubang.com/test/",
+			url: "https://www.zhongjubang.com/api/",
 			fileList: [],
 			logfileList: [],
 			hasChange: false,
@@ -163,7 +163,7 @@ export default {
 	computed: {
 		containerWidth() {
 			const width = this.width;
-			if (/^[\d]+(\.[\d]+)?$/.test(width)) {
+			if (/^[\d]+(\.[\d]+)?$/.api(width)) {
 				// matches `100`, `'100'`
 				return `${width}px`;
 			}
@@ -243,8 +243,8 @@ export default {
 		// 设置上传图片格式
 		beforeAvatarUpload(file) {
 			// console.log(file)
-			var testmsg = /^image\/(jpeg|png|jpg)$/.test(file.type)
-			if (!testmsg) {
+			var apimsg = /^image\/(jpeg|png|jpg)$/.api(file.type)
+			if (!apimsg) {
 				this.$message.error('上传图片格式不对!')
 				return
 			}

@@ -127,7 +127,7 @@ export default {
             })
         },
 		getInfo() {
-			const url = "https://www.zhongjubang.com/test/";
+			const url = "https://www.zhongjubang.com/api/";
 			
 			var parmas = {
 				type: 1,
@@ -175,7 +175,7 @@ export default {
 			const item = this.textarea2;
 		},
 		sendData(){
-            const url = "https://www.zhongjubang.com/test/";
+            const url = "https://www.zhongjubang.com/api/";
 			var parmas = {
 				state: this.temp.state,
                 userWithdrawId: this.userwithdrawId
