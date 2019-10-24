@@ -149,7 +149,7 @@ export default {
 			this.getInfo()
 		},
 		getInfo() {
-			const url = "https://www.zhongjubang.com/test/";
+			const url = "https://www.zhongjubang.com/api/";
 			
 			let parmas = {
 				newsType: this.newsType,
@@ -204,7 +204,7 @@ export default {
 				cancelButtonText: "取消",
 				type: "warning"
 			}).then(() => {
-				const url = "http://www.zhongjubang.com/test/";
+				const url = "http://www.zhongjubang.com/api/";
 				this.Axios.post(url + "/admin/offcial/delnews", {
 					newsId: row.newsId
 				}).then(res => {

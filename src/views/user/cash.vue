@@ -13,6 +13,8 @@
 				<el-table-column prop="companyName" label="公司名" width="160"></el-table-column>
 				<el-table-column prop="nickname" label="昵称" width="160"></el-table-column>
 				<el-table-column prop="state" label="状态" :formatter="cashState" width="160"></el-table-column>
+				<el-table-column prop="state" label="状态" :formatter="cashState" width="160"></el-table-column>
+				<el-table-column prop="state" label="状态" :formatter="cashState" width="160"></el-table-column>
 			</el-table>
 			<!--分页 start-->
 			<!--<el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>-->
@@ -79,7 +81,7 @@ export default {
 			}
 		},
 		getInfo() {
-			const url = "https://www.zhongjubang.com/test/";
+			const url = "https://www.zhongjubang.com/api/";
 			
 			var parmas = {
 				state: '0',

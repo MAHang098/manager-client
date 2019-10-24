@@ -9,7 +9,7 @@
 			</el-form-item>
 			<el-form-item label="新闻大图" prop="newsImg" >
 				<!-- <el-upload class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
-				action="http://www.zhongjubang.com/test/upload" :on-preview="handlePreview" 
+				action="http://www.zhongjubang.com/api/upload" :on-preview="handlePreview" 
 				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false"  :on-success="uploadSuccess"
 				:limit="1" :on-exceed="handleExceed" :file-list="fileList" :before-upload="beforeAvatarUpload">
 					<el-button size="small" type="primary">点击上传</el-button>
@@ -20,7 +20,7 @@
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 				</el-upload>-->
 				<el-upload
-				action="http://www.zhongjubang.com/test/upload"
+				action="http://www.zhongjubang.com/api/upload"
 				list-type="picture-card" class="upload-demo" accept="image/jpeg,image/jpg,image/png" 
 				:on-preview="handlePreview"
 				:on-remove="handleRemove" :before-remove="beforeRemove" :on-progress="getfileName" :multiple="false" :on-success="uploadSuccess" :limit="1" 
@@ -110,7 +110,7 @@ export default {
 	},
 	data() {
 		return {
-			url: "https://www.zhongjubang.com/test/",
+			url: "https://www.zhongjubang.com/api/",
 			fileList: [],
 			hasChange: false,
 			hasInit: false,
@@ -163,7 +163,7 @@ export default {
 	computed: {
 		containerWidth() {
 			const width = this.width;
-			if (/^[\d]+(\.[\d]+)?$/.test(width)) {
+			if (/^[\d]+(\.[\d]+)?$/.api(width)) {
 				// matches `100`, `'100'`
 				return `${width}px`;
 			}
@@ -219,8 +219,8 @@ export default {
 		},
 		// 设置上传图片格式
 		beforeAvatarUpload(file) {
-			var testmsg = /^image\/(jpeg|png|jpg)$/.test(file.type)
-			if (!testmsg) {
+			var apimsg = /^image\/(jpeg|png|jpg)$/.api(file.type)
+			if (!apimsg) {
 				this.$message.error('上传图片格式不对!')
 				return
 			}
@@ -259,8 +259,8 @@ export default {
 			+ '((/?)|' // a slash isn't required if there is no file name 
 			+ '(/[0-9a-z_!~*\'().;?:@&=+$,%#-]+)+/?)$'; 
 			var re=new RegExp(strRegex); 
-			//re.test() 
-			if (!re.test(this.temp.url)) { 
+			//re.api() 
+			if (!re.api(this.temp.url)) { 
 				this.$message.error('你输入的地址无效'); 
 				return false;
 			} 

@@ -99,7 +99,7 @@ export default {
 			this.getInfo()
 		},
 		getInfo() {
-			const url = "https://www.zhongjubang.com/test/";
+			const url = "https://www.zhongjubang.com/api/";
 			var parmas = {
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize

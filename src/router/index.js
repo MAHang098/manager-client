@@ -14,6 +14,7 @@ import nestedRouter from './modules/nested'
 import user from './modules/user' // 用户管理模块
 import brand from './modules/brand' // 品牌管理模块
 import orderRecommand from './modules/orderRecommand' // 订单管理模块
+import cash from './modules/cash' // 订单管理模块
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -135,6 +136,7 @@ export const asyncRoutes = [
   user,
   brand,
   orderRecommand,
+  cash,
 
   // {
   //   path: '/tab',
