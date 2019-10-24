@@ -7,13 +7,7 @@
 				<el-table-column prop="openBank" label="开户行" width="160"></el-table-column>
 				<el-table-column prop="openPerson" label="开户人" width="160"></el-table-column>
 				<el-table-column prop="realName" label="真实姓名" min-width="160"></el-table-column>
-				<el-table-column prop="cardNumber" label="卡号" min-width="160"></el-table-column>
-				<el-table-column prop="money" label="提现金额" width="160"></el-table-column>
-				<el-table-column prop="phone" label="手机号" width="160"></el-table-column>
-				<el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
-				<el-table-column prop="companyName" label="公司名" width="160"></el-table-column>
-				<el-table-column prop="nickname" label="昵称" width="160"></el-table-column>
-				<el-table-column prop="state" label="状态" :formatter="cashState" width="160"></el-table-column>
+			
 			</el-table>
 			<!--分页 start-->
 			<!--<el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>-->

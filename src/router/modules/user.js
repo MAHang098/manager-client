@@ -1,5 +1,5 @@
 import Layout from '@/layout'
-
+import Bank from '@/views/user/cash/bank'
 
 const userRouter = {
   path: '/user',
@@ -35,16 +35,16 @@ const userRouter = {
       name: 'identify',
       meta: { title: '实名审核' }
     },
-    {
-      path: 'cash',
-      component: () => import('@/views/user/cash'),
-      name: 'cash',
-      meta: { title: '提现审核' }
-    },
+    // {
+    //   path: 'cash',
+    //   component: () => import('@/views/user/cash'),
+    //   name: 'cash',
+    //   meta: { title: '提现审核' }
+    // },
     {
       path: '/cash',
       // component: () => import('@/views/user/balance'),
-      name: 'test',
+      name: 'cash',
       redirect: 'Cash',
       component: () => import('@/views/user/cash'),
       meta: { title: '三级菜单' },

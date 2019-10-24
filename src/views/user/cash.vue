@@ -72,7 +72,6 @@ export default {
 			this.getInfo()
 		},
 		cashState(row) {
-			console.log(row.state)
 			if(row.state == 0) {
 				return '未审核冻结中'
 			} else {
