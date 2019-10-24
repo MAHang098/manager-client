@@ -123,7 +123,7 @@ export default {
 		},
 		//放大图片
 		handlePreview(row) {
-			this.dialogImageUrl = row.newsImg;
+			this.dialogImageUrl = row.businessCardPic;
 			this.dialogVisible = true;
 		},
 		// 修改当前页
