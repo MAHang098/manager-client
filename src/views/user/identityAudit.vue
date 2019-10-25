@@ -19,7 +19,7 @@
 				<el-table-column prop="nickName" label="昵称"></el-table-column>
 				<el-table-column prop="companyName" label="公司名"> </el-table-column>
 				<el-table-column prop="businessCardSubmitTime" label="提交时间"></el-table-column>
-				<el-table-column prop="businessCardCheckStatus" label="奖励状态" :formatter="rewardState"></el-table-column>
+				<el-table-column prop="businessCardRewardStatus" label="奖励状态" :formatter="rewardState"></el-table-column>
 				<el-table-column prop="businessCardCheckStatus" label="审核状态" :formatter="auditState"></el-table-column>
 				<el-table-column label="状态修改" align="center" width="180" class-name="small-padding fixed-width">
 					<template slot-scope="{row}">
@@ -134,7 +134,7 @@ export default {
 		},
 		// 奖励状态
 		rewardState(row) {
-			return row.businessCardCheckStatus === '1' ? '已领取' : '未领取'
+			return row.businessCardRewardStatus === '1' ? '已领取' : '未领取'
 		},
 		// 审核状态
 		auditState(row) {
