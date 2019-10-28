@@ -230,17 +230,7 @@ export default {
     createData(file, fileList) {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-
-          const url = this.url;
-          // const fileName = this.fileList.name
-          console.log(this.temp.newsId);
-          console.log(this.value);
-          console.log(this.fileList.name);
-          console.log(this.temp.newsQuote);
-          console.log(this.temp.newsTitle);
-          console.log(this.temp.newsTypeId);
-          console.log(this.temp.url);
+          
           this.dialogFormVisible = true;
           this.Axios.post(url + "/admin/offcial/addnews", {
             newsContent: this.value,

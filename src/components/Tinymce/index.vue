@@ -260,8 +260,6 @@ export default {
 			this.$refs["dataForm"].validate(valid => {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-					var url = this.url;
-					
 					// 判断新闻内容是否为空
 					if(this.value == '') {
 						 this.$message.error('请填写新闻内容');

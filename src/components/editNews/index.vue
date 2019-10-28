@@ -283,15 +283,6 @@ export default {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
 
-					const url = this.url;
-					// const fileName = this.fileList.name
-					// console.log(this.temp.newsId);
-					// console.log(this.value);
-					// console.log(this.fileList.name);
-					// console.log(this.temp.newsQuote);
-					// console.log(this.temp.newsTitle);
-					// console.log(this.temp.newsTypeId);
-					// console.log(this.temp.url);
 					if(this.value == '' || this.value == undefined || this.value == null ) {
 						 this.$message.error('请填写新闻内容');
 						 return;

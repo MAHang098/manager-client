@@ -86,15 +86,7 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          const url = this.url;
-          console.log(url)
-          console.log(this.temp.newsContent)
-          console.log(this.temp.newsImg)
-          console.log(this.temp.newsQuote)
-          console.log(this.temp.newsTitle)
-          console.log(this.temp.newsTypeId)
-          console.log(this.temp.url)
+        
           this.dialogFormVisible = true
           this.Axios.post(url + "/admin/applet/updatenews", {
             newsId:'1',
