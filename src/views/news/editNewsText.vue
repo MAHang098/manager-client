@@ -201,7 +201,7 @@ export default {
 	methods: {
         // 获取新闻详情
         detailNews(id) {
-			this.Axios.post(this.url + '/admin/applet/getnewsdetailbyid', {newId: id})
+			this.Axios.post(url + '/admin/applet/getnewsdetailbyid', {newId: id})
 				.then(res => {
 					if(res.data.code == 200) {
 						var data = res.data.data;
@@ -254,11 +254,11 @@ export default {
 		},
 		// 设置上传图片格式
 		beforeAvatarUpload(file) {
-			var apimsg = /^image\/(jpeg|png|jpg)$/.api(file.type)
-			if (!apimsg) {
-				this.$message.error('上传图片格式不对!')
-				return
-			}
+			// var apimsg = /^image\/(jpeg|png|jpg)$/.api(file.type)
+			// if (!apimsg) {
+			// 	this.$message.error('上传图片格式不对!')
+			// 	return
+			// }
 		},
 		init() {
 			// dynamic load tinymce from cdn
@@ -299,7 +299,6 @@ export default {
 			this.$refs["dataForm"].validate(valid => {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-					var url = this.url;
 					if(this.value == '' && this.temp.url == '') {
 						 this.$message.error('请填写新闻内容或者新闻地址');
 						 return;
@@ -323,7 +322,7 @@ export default {
 						url: this.temp.url,
                         newsId: this.detailsId
 					}
-					
+					console.log(url)
 					this.Axios.post(url + "/admin/offcial/updatenews",params)
 						.then(res => {
 							if(res.data.code == 200) {

@@ -68,7 +68,6 @@ import toolbar from "../../components/Tinymce/toolbar";
 import load from "../../components/Tinymce/dynamicLoadScript";
 // import { fetchList } from "@/api/article";
 import axios from 'axios';
-import '../../../global.js'; //引入全局url
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
 const tinymceCDN =
