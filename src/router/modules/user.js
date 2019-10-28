@@ -1,5 +1,4 @@
 import Layout from '@/layout'
-import Bank from '@/views/user/cash/bank'
 
 const userRouter = {
   path: '/user',
@@ -10,33 +9,40 @@ const userRouter = {
     title: '用户管理',
     icon: 'component'
   },
-  children: [
-    {
+  children: [{
       path: 'balance',
       component: () => import('@/views/user/balance'),
       name: 'balance',
-      meta: { title: '余额日志' }
+      meta: {
+        title: '余额日志'
+      }
     },
     {
       path: 'integral',
       component: () => import('@/views/user/integral'),
       name: 'integral',
-      meta: { title: '积分日志' }
+      meta: {
+        title: '积分日志'
+      }
     },
     {
       path: 'identityAudit',
       component: () => import('@/views/user/identityAudit'),
       name: 'identityAudit',
-      meta: { title: '身份审核' }
+      meta: {
+        title: '身份审核'
+      }
     },
     {
       path: 'identify',
       component: () => import('@/views/user/identify'),
       name: 'identify',
-      meta: { title: '实名审核' }
+      meta: {
+        title: '实名审核'
+      }
     }
-    
-    
+
+
   ]
 }
 
