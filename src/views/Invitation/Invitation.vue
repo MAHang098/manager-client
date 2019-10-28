@@ -1,33 +1,27 @@
 <template>
 	<div class="app-container">
 		<div class="filter-container">
-			
+            <div class="demo-input-size">
+				<el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="userId"  @keyup.enter.native="handleClick" clearable class="elInput"></el-input>
+				<el-button  style="margin-left: 10px;" type="primary"  icon="el-icon-search"  @click="handleClick">搜索</el-button>
+			</div>
 			<!--渲染数据 start-->
-			<el-table :data="tableData" border style="width: 100%" class="taba">
-				<el-table-column prop="aliPayName" label="支付宝名" width="160"></el-table-column>
-				<el-table-column prop="realName" label="真实姓名" min-width="160"></el-table-column>
-				<el-table-column prop="aliPayAccount" label="支付宝账户" width="160"></el-table-column>
-				<el-table-column prop="money" label="钱数" width="160"></el-table-column>
-				<el-table-column prop="phone" label="手机号" width="160"></el-table-column>
-				<el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
-				<el-table-column prop="companyName" label="公司名" width="160"></el-table-column>
-				<el-table-column prop="nickname" label="昵称" width="160"></el-table-column>
-				<el-table-column prop="state" label="状态" :formatter="cashState" width="160"></el-table-column>
-				<el-table-column prop="state" label="状态" :formatter="cashState" width="160"></el-table-column>
-				
+			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading" >
+				<el-table-column prop="tpUserId" label="被邀请的用户id" ></el-table-column>
+				<el-table-column prop="nickname" label="用户昵称" ></el-table-column>
+				<el-table-column prop="businessCardCheckStatus" label="名片提交审核状态" :formatter="auditAtatus"></el-table-column>
 			</el-table>
+			<!--渲染数据 end-->
+		
 			<!--分页 start-->
-			<!--<el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>-->
 			<div class="block">
-
-				<el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[10, 20, 30]" :page-size="100" layout="sizes, prev, pager, next" :total="pageTotal">
+				<el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[10, 20, 30]" :page-size="pageSize" layout="sizes, prev, pager, next" :total="pageTotal">
 				</el-pagination>
 			</div>
 			<!--分页 end-->
 		</div>
 	</div>
 </template>
-
 
 <script>
 import {
@@ -39,66 +33,64 @@ import {
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-import https from "../../../../https.js"; // 注意用自己的路径
-import '../../../../global.js'; //引入全局url
+import https from "../../../https.js"; // 注意用自己的路径
+import '../../../global.js'; //引入全局url
 
 export default {
-	name: "alipay",
+	name: "Invitation",
 	data() {
 		return {
-			newsType: "applet_news",
 			pageIndex: 1,
-			pageSize: 20,
+			pageSize: 10,
 			search: "",
 			tableData: [],
-			state: "",
-			pageTotal: null,
-			currentPage2: 1
+			loading: true,
+			pageTotal: 1,
+            currentPage2: 1,
+            userId: ''
 		};
+	},
+	created() {
+		
 	},
 	// 获取新闻数据
 	mounted() {
-		this.getInfo();
 		this.getInput();
+		this.getInfo();
 	},
 	methods: {
+        handleClick() {
+            this.getInfo();
+        },
 		// 修改每页条数
 		handleSizeChange(val) {
-			// console.log(`每页 ${val} 条`);
 			this.pageSize = `${val}`;
 			this.getInfo()
 		},
 		// 修改当前页
 		handleCurrentChange(val) {
-			// console.log(`当前页: ${val}`);
 			this.pageIndex = `${val}`;
 			this.getInfo()
 		},
-		cashState(row) {
-			console.log(row.state)
-			if(row.state == 0) {
-				return '未审核冻结中'
-			} else {
-				return '审核打款了'
-			}
-		},
+		// 获取品牌列表
 		getInfo() {
 			
 			
 			var parmas = {
 				type: 1,
 				pageIndex: this.pageIndex,
-				pageSize: this.pageSize
+				pageSize: this.pageSize,
 			}
-			this.Axios.post(url + "/admin/applet/getuserwithdraw", parmas)
+			this.loading = true;
+			this.Axios.post(url + "/admin/applet/getadminuserinvitelist", parmas)
 				.then(res => {
+
 					if (res.status == 200) {
+						this.loading = false;
 						const tableData = res.data.data.dataList;
 						this.tableData = tableData;
 						this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
-
 					} else {
-						console.log(res.code);
 						if (res.code == 400) {
 							console.log("请求异常");
 						} else if (res.code == 401) {
@@ -129,7 +121,17 @@ export default {
 		},
 		getInput() {
 			const item = this.textarea2;
-		}
+        },
+        // 显示审核状态
+        auditAtatus(row) {
+            if(row.businessCardCheckStatus == 1) {
+                return '待审核'
+            } else if(row.businessCardCheckStatus == 2) {
+                return '已审核'
+            } else {
+                return '审核不通过'
+            }
+        }
 	}
 };
 </script>
@@ -137,5 +139,9 @@ export default {
 <style>
 	.block {
 		margin-top: 20px;
+	}
+    .elInput {
+		width: 160px;
+		margin-bottom: 10px;
 	}
 </style>

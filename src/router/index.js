@@ -1,7 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Axios from 'axios'
+import qs from 'qs';
 
+Vue.prototype.$axios = Axios;
 Vue.use(Router)
+
+// Axios.defaults.baseURL = "https://www.zhongjubang.com/test/";
+Axios.defaults.baseURL = "https://www.zhongjubang.com/test/";
 
 /* Layout */
 import Layout from '@/layout'
@@ -15,6 +21,7 @@ import user from './modules/user' // 用户管理模块
 import brand from './modules/brand' // 品牌管理模块
 import orderRecommand from './modules/orderRecommand' // 订单管理模块
 import cash from './modules/cash' // 订单管理模块
+import grabList from './modules/grabList' // 抢单管理模块
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -55,7 +62,7 @@ export const constantRoutes = [
     children: [{
       path: 'dashboard',
       component: () =>
-	  import ('@/views/dashboard/index'),
+        import('@/views/dashboard/index'),
       name: 'Dashboard',
       meta: {
         title: '首页',
@@ -64,6 +71,8 @@ export const constantRoutes = [
       }
     }]
   },
+
+
   {
     path: '/redirect',
     component: Layout,
@@ -71,34 +80,34 @@ export const constantRoutes = [
     children: [{
       path: '/redirect/:path*',
       component: () =>
-        import ('@/views/redirect/index')
+        import('@/views/redirect/index')
     }]
   },
   {
     path: '/login',
     component: () =>
-      import ('@/views/login/index'),
+      import('@/views/login/index'),
     hidden: true
   },
   {
     path: '/auth-redirect',
     component: () =>
-      import ('@/views/login/auth-redirect'),
+      import('@/views/login/auth-redirect'),
     hidden: true
   },
   {
     path: '/404',
     component: () =>
-      import ('@/views/error-page/404'),
+      import('@/views/error-page/404'),
     hidden: true
   },
   {
     path: '/401',
     component: () =>
-	import ('@/views/error-page/401'),
+      import('@/views/error-page/401'),
     hidden: true
   },
-  
+
   {
     path: '/profile',
     component: Layout,
@@ -107,14 +116,14 @@ export const constantRoutes = [
     children: [{
       path: 'index',
       component: () =>
-        import ('@/views/profile/index'),
+        import('@/views/profile/index'),
       name: 'Profile',
       meta: {
         title: 'Profile',
         icon: 'user',
         noCache: true
       }
-    },]
+    }, ]
   }
   
 
@@ -137,6 +146,7 @@ export const asyncRoutes = [
   brand,
   orderRecommand,
   cash,
+  grabList,
 
   // {
   //   path: '/tab',
@@ -152,12 +162,23 @@ export const asyncRoutes = [
   // },
 
 
-  // 404 page must be placed at the end !!!
-  // {
-  //   path: '*',
-  //   redirect: '/404',
-  //   hidden: true
-  // }
+  {
+    path: '/Invitation',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: 'ComponentDemo',
+   
+    children: [{
+        path: 'Invitation',
+        component: () =>
+          import('@/views/Invitation/Invitation'),
+        name: 'Invitation',
+        meta: {
+          title: '邀请订单',
+          icon: 'component',
+        }
+      }]
+  }
 
 ]
 
