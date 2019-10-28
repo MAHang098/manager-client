@@ -44,7 +44,10 @@
 				<el-input v-model="temp.brandRoyalty" />
 			</el-form-item>
 			<el-form-item label="品牌类型id" prop="brandTypeId">
-				<el-input v-model="temp.brandTypeId" />
+				<el-select v-model="temp.brandTypeId" placeholder="请选择品牌类型"  :loading="brandLoading">
+					<el-option v-for="item in options" :key="item.id" :label="item.typeName" :value="item.id">
+					</el-option>
+				</el-select>
 			</el-form-item>
             <el-form-item label="排序序号" prop="sn">
 				<el-input v-model="temp.sn" />
@@ -155,7 +158,8 @@ export default {
 				brandTypeId:  [{ required: true, message: '请输入品牌类型id', trigger: 'blur' }],
 				sn:  [{ required: true, message: '请输入排序序号', trigger: 'blur' }]
 			},
-			
+			brandLoading: false,
+			options: []
 		};
 	},
 	created() {
@@ -183,6 +187,7 @@ export default {
 	},
 	mounted() {
 		this.init();
+		this.getbrandtypelist();
 	},
 	activated() {
 		if (window.tinymce) {
@@ -193,6 +198,7 @@ export default {
 		// 获取编辑详情
 		let detailData = this.$route.params.data;
 		this.brandId = detailData.id;
+		console.log(detailData)
 		this.temp = {
 			brandIcon: detailData.brandIcon,
 			brandImg: detailData.brandImg,
@@ -204,17 +210,22 @@ export default {
 			sn: detailData.sn
 		}
 		// 品牌图
-		let fileObj = {
-			name: detailData.brandImg.split("/").pop(),
-			url: detailData.brandImg
+		if( detailData.brandImg) {
+			let fileObj = {
+				name: detailData.brandImg.split("/").pop(),
+				url: detailData.brandImg
+			}
+			this.fileList.push(fileObj);
 		}
 		//品牌图标
-		let logObj = {
-			name: detailData.brandIcon.split("/").pop(),
-			url: detailData.brandIcon
+		if( detailData.brandIcon) {
+			let logObj = {
+				name: detailData.brandIcon.split("/").pop(),
+				url: detailData.brandIcon
+			}
+			this.logfileList.push(logObj);
 		}
-		this.fileList.push(fileObj);
-		this.logfileList.push(logObj);
+	
 	},
 	deactivated() {
 		this.destroyTinymce();
@@ -223,6 +234,19 @@ export default {
 		this.destroyTinymce();
 	},
 	methods: {
+		// 搜索品牌类型id
+		getbrandtypelist() {
+			this.brandLoading = true;
+			this.Axios.post(url + 'admin/applet/getbrandtypelist')
+				.then(res => {
+					// console.log(res);
+					this.brandLoading = false;
+					if(res.data.code == 200) {
+						let data = res.data.data;
+						this.options = data;
+					}
+				})
+		},
 		getParams: function() {
 			// 取到路由带过来的参数
 			var routerParams = this.$route.query.nameId

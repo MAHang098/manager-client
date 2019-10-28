@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Axios from 'axios'
 import qs from 'qs';
+import '../../global.js';
 
 Vue.prototype.$axios = Axios;
 Vue.use(Router)
@@ -14,9 +15,9 @@ import Layout from '@/layout'
 
 /* Router Modules */
 // import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
+// import chartsRouter from './modules/charts'
 import tableRouter from './modules/table' // 新闻模块
-import nestedRouter from './modules/nested'
+// import nestedRouter from './modules/nested'
 import user from './modules/user' // 用户管理模块
 import brand from './modules/brand' // 品牌管理模块
 import orderRecommand from './modules/orderRecommand' // 订单管理模块
@@ -166,7 +167,7 @@ export const asyncRoutes = [
     path: '/Invitation',
     component: Layout,
     redirect: 'noRedirect',
-    name: 'ComponentDemo',
+    name: 'Invitations',
    
     children: [{
         path: 'Invitation',

@@ -81,7 +81,7 @@
 
 <script>
 
-
+import '../../../global.js'; //引入全局url
 export default {
 	name: "addGrab",	
 	data() {
@@ -112,38 +112,62 @@ export default {
         }
 	},
 	methods: {
+        // 请求抢单详情
         fetchData(id) {
-            this.$axios.post("/admin/applet/getgrabsheetbyid",{grabSheetId: id})
+            this.Axios.post(url+"/admin/applet/getgrabsheetbyid",{grabSheetId: id})
                 .then(res => {
                     if(res.data.code == 200) {
                         let data = res.data.data;
-                        this.formData = data;
-                        console.log(this.formData)
+                        this.formData = {
+                            contacts: data.contacts,
+                            phone: data.phone,
+                            sex: data.sex.toString(),
+                            shelfTime: this.resolvingDate(data.shelfTime),
+                            region: data.region,
+                            budget: data.budget,
+                            apartment: data.apartment,
+                            preOrderedProducts: data.preOrderedProducts,
+                            preorderTime: this.resolvingDate(data.preorderTime),
+                            intentionBrand: data.intentionBrand,
+                            decorationStyle: data.decorationStyle,
+                            remarks: data.remarks
+                        }
                     }
                     // if(res.data.data.)
                 })
         },
-		submitForm() {
-            // console.log(this.formData.preorderTime);
+        // 日期格式转换
+        resolvingDate(date){
+                //date是传入的时间
+            let d = eval(new Date(date));
+            let month = (d.getMonth() + 1) < 10 ? '0'+(d.getMonth() + 1) : (d.getMonth() + 1);
+            let day = d.getDate()<10 ? '0'+d.getDate() : d.getDate();
+            let hours = d.getHours()<10 ? '0'+d.getHours() : d.getHours();
+            let min = d.getMinutes()<10 ? '0'+d.getMinutes() : d.getMinutes();
+            let sec = d.getSeconds()<10 ? '0'+d.getSeconds() : d.getSeconds();
+
+            let times=d.getFullYear() + '-' + month + '-' + day + ' ' + hours + ':' + min + ':' + sec;
             
+             if(typeof times == 'string' && this.queryId) {
+                 return  new Date(times);
+            }
+            return times;
+        },
+
+		submitForm() {
+           
             this.$refs['formData'].validate((valid) => {
                 if (!valid) {
                     this.$message.error('必填项不能为空!');
                     return false;
                 }
-                // if( !this.queryId) {
-                //     this.formData.preorderTime = new Date(this.formData.preorderTime).getFullYear() + '-' + (new Date(this.formData.preorderTime).getMonth() + 1) + '-' + new Date(this.formData.preorderTime).getDate() + ' ' + '00:00:00';
-                //     this.formData.shelfTime = new Date(this.formData.shelfTime).getFullYear() + '-' + (new Date(this.formData.shelfTime).getMonth() + 1) + '-' + new Date(this.formData.shelfTime).getDate() + ' ' + '00:00:00';
-                // }
-                console.log(this.formData.preorderTime);
-                console.log(this.formData.shelfTime);
-                return;
                 let params = this.formData;
-                console.log(params);
-                console.log(this.queryId)
+                params.preorderTime = this.resolvingDate(this.formData.preorderTime);
+                params.shelfTime = this.resolvingDate(this.formData.shelfTime);
+                // 编辑抢单
                 if(this.queryId) {
                     params.grabSheetId = this.queryId;
-                    this.$axios.post("/admin/applet/updategrabsheet",params)
+                    this.Axios.post(url + "/admin/applet/updategrabsheet",params)
                         .then(res => {
                             console.log(res.data.code);
                             if(res.data.code == 200) {
@@ -157,9 +181,9 @@ export default {
                             }
                         })
                 } else {
-                    this.$axios.post("/admin/applet/addgrabsheet",params)
+                    // 添加抢单
+                    this.Axios.post(url + "/admin/applet/addgrabsheet",params)
                         .then(res => {
-                            console.log(res.data.code);
                             if(res.data.code == 200) {
                                 this.$notify({
                                   	title: 'Success',

@@ -4,6 +4,9 @@
 			<!-- 搜索框 start -->
 			<div class="demo-input-size">
 				<el-input placeholder="请输入姓名或手机" prefix-icon="el-icon-search" v-model="searchInput"  @keyup.enter.native="handleClick" clearable class="elInput"></el-input>
+				<el-select v-model="stateValue" placeholder="审核状态" clearable @change="selectAudit(stateValue)">
+					<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+				</el-select>
 				<el-button  style="margin-left: 10px;" type="primary"  icon="el-icon-search"  @click="handleClick">搜索</el-button>
 			</div>
 			<!-- 搜索框 end -->
@@ -102,7 +105,33 @@ export default {
 					label: '签约失败'
 				}
 			],
-			newsType: "applet_news",
+			options: [
+				{
+					value: '1',
+					label: '待处理'
+				}, 
+				{
+					value: '2',
+					label: '处理中'
+				}, 
+				{
+					value: '3',
+					label: '有需求'
+				}, 
+				{
+					value: '4',
+					label: '无需求'
+				}, 
+				{
+					value: '5',
+					label: '签约成功'
+				},
+				{
+					value: '6',
+					label: '签约失败'
+				}
+			],
+        	stateValue: '',
 			pageIndex: 1,
 			pageSize: 10,
 			search: "",
@@ -125,6 +154,10 @@ export default {
 		this.getInput();
 	},
 	methods: {
+		selectAudit(val) {
+			this.stateValue = val;
+			this.getInfo();
+		},
 		// 键盘回车事件/搜索
 		handleClick() {
 			this.search = this.searchInput;
@@ -166,7 +199,7 @@ export default {
 		},
 		getInfo() {
 			var parmas = {
-				state: '',
+				state: this.stateValue,
 				search: this.search,
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize

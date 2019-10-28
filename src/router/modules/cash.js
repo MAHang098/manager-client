@@ -5,7 +5,7 @@ const cash = {
   path: '/cash',
   component: Layout,
   redirect: 'noRedirect',
-  name: 'ComponentDemo',
+  name: 'cash',
   meta: {
     title: '提现审核',
     icon: 'component'

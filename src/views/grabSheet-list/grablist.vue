@@ -49,10 +49,11 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import https from "../../../https.js"; // 注意用自己的路径
+import '../../../global.js'; //引入全局url
 // import Tinymce from "/components/Tinymce"
 // import Tinymce from 'components/Tinymce'
 export default {
-	name: "grabList",
+	name: "grabLists",
 	data() {
 		return {
             loading: true,
@@ -90,7 +91,7 @@ export default {
 		},
 		// 获取品牌列表
 		getInfo() {
-			const url = "https://www.zhongjubang.com/test/";
+
 			let parmas = {
                 userId: this.userId,
 				pageIndex: this.pageIndex,
@@ -146,12 +147,12 @@ export default {
         },
         // 添加
        addGrab() {
-           this.$router.replace('/grabList/addGrab');
+           this.$router.replace('/grabList/editGrab');
        },
        // 修改
        editGrab(row) {
            this.$router.push({
-		        path:'/grabList/addGrab',
+		        path:'/grabList/editGrab',
 		        query:{grabSheetId:row.id}
 	      	})
        },
@@ -162,7 +163,7 @@ export default {
 				cancelButtonText: "取消",
 				type: "warning"
 			}).then(() => {
-                this.$axios.post("/admin/applet/updateisdelstate",{id: row.id})
+                this.Axios.post(url + "/admin/applet/updateisdelstate",{id: row.id})
                     .then(res => {
                         if(res.data.code == 200) {
                             this.$message.success('删除成功');

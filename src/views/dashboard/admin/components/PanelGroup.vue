@@ -7,9 +7,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            用户总数
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="userCount" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -20,9 +20,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Messages
+            今日活跃
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="DAU" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -33,9 +33,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            今日注册
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="dayRegister" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -46,9 +46,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Shoppings
+            今日推荐
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="dayRecommend" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -62,7 +62,30 @@ export default {
   components: {
     CountTo
   },
+  data() {
+    return {
+      userCount: 0,        // 用户总数
+      dayRegister: 0,     // 今日注册
+      DAU: 0,            // 今日活跃
+      dayRecommend: 0   // 今日推荐
+    }
+  },
+  mounted() {
+	  this.init();
+  },
   methods: {
+    init() {
+        this.Axios.post(url + '/admin/applet/getadminappletuser')
+            .then(res => {
+				if(res.data.code == 200) {
+					let data = res.data.data;
+					this.userCount = Number(data.userCount);
+					this.dayRegister = Number(data.dayRegister);
+					this.DAU = Number(data.DAU);
+					this.dayRecommend = Number(data.dayRecommend);
+				}
+            })
+    },
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     }

@@ -45,7 +45,11 @@
 				<el-input v-model="temp.brandRoyalty" />
 			</el-form-item>
 			<el-form-item label="品牌类型id" prop="brandTypeId">
-				<el-input v-model="temp.brandTypeId" />
+				<!-- <el-input v-model="temp.brandTypeId" /> -->
+				<el-select v-model="temp.brandTypeId" placeholder="请选择品牌类型"  :loading="brandLoading">
+					<el-option v-for="item in options" :key="item.id" :label="item.typeName" :value="item.id">
+					</el-option>
+				</el-select>
 			</el-form-item>
             <el-form-item label="排序序号" prop="sn">
 				<el-input v-model="temp.sn" />
@@ -154,7 +158,9 @@ export default {
 				sn:  [{ required: true, message: '请输入排序序号', trigger: 'blur' }]
 			},
 			dialogImageUrl: '',
-			dialogVisible: false
+			dialogVisible: false,
+			brandLoading: false,
+			options: [],
 		};
 	},
 	created() {
@@ -182,6 +188,7 @@ export default {
 	},
 	mounted() {
 		this.init();
+		this.getbrandtypelist();
 	},
 	activated() {
 		if (window.tinymce) {
@@ -198,18 +205,18 @@ export default {
 		
         // 品牌图
 		getfileName(file, fileList) {
-			this.fileList.name = fileList.name
+			// this.fileList.name = fileList.name
 		},
         // 品牌图标
         getlogfileName(file, fileList) {
-            this.logfileList.name = fileList.name
+            // this.logfileList.name = fileList.name
         },
 		uploadSuccess(response, file, fileList) {
 			if(response.code == 200) {
 				this.fileList.name = response.data.fileName;
 			}
 		},
-		uploadSuccessLog(response, file, logfileList) {
+		uploadSuccessLog(response, file, fileList) {
 			if(response.code == 200) {
 				this.logfileList.name = response.data.fileName;
 			}
@@ -272,11 +279,24 @@ export default {
 			this.dialogImageUrl = file.url;
 			this.dialogVisible = true;
 		},
+		// 搜索品牌类型id
+		getbrandtypelist() {
+			this.brandLoading = true;
+			this.Axios.post(url + 'admin/applet/getbrandtypelist')
+				.then(res => {
+					// console.log(res);
+					this.brandLoading = false;
+					if(res.data.code == 200) {
+						let data = res.data.data;
+						this.options = data;
+					}
+				})
+		},
 		createData() {
 			this.$refs["dataForm"].validate(valid => {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-					var url = this.url;
+					
 					// console.log(this.logfileList.name)
 					// console.log(this.fileList.name)
 					// 判断新闻内容是否为空

@@ -121,4 +121,7 @@ export default {
     padding: 8px;
   }
 }
+.github-corner {
+  display: none;
+}
 </style>

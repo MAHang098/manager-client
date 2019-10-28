@@ -4,7 +4,7 @@ const grabListRouter = {
   path: '/grabList',
   component: Layout,
   redirect: 'noRedirect',
-  name: 'grabList',
+  name: 'grabLists',
   meta: {
     title: '抢单管理',
     icon: 'component'
@@ -18,9 +18,9 @@ const grabListRouter = {
       }
     },
     {
-        path: 'addGrab',
-        component: () => import('@/views/grabSheet-list/addGrab'),
-        name: 'addGrab',
+        path: 'editGrab',
+        component: () => import('@/views/grabSheet-list/editGrab'),
+        name: 'editGrab',
         meta: { title: '添加抢单' },
         hidden: true
       },

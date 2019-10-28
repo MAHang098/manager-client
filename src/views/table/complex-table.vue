@@ -2,10 +2,10 @@
 	<div class="app-container">
 		<div class="filter-container">
 			<!-- 搜索框 start -->
-			<!-- <div class="demo-input-size">
-				<el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchInput"  @keyup.enter.native="handleClick" clearable class="elInput"></el-input>
+			<div class="demo-input-size">
+				<el-input placeholder="请输入标题" prefix-icon="el-icon-search" v-model="searchInput"  @keyup.enter.native="handleClick" clearable class="elInput"></el-input>
 				<el-button  style="margin-left: 10px;" type="primary"  icon="el-icon-search"  @click="handleClick">搜索</el-button>
-			</div> -->
+			</div>
 			<!-- 搜索框 end -->
 
 			<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addNews">添加新闻</el-button>
@@ -129,7 +129,7 @@ export default {
 	methods: {
 		// 键盘回车事件/搜索
 		handleClick() {
-			this.search = this.input1;
+			this.search = this.searchInput;
 			this.getInfo();
 		},
 		
@@ -268,7 +268,7 @@ export default {
 		margin-top: 20px;
 	}
 	.elInput {
-		width: 160px;
+		width: 210px;
 		margin-bottom: 10px;
 	}
 </style>

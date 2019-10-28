@@ -106,7 +106,6 @@ export default {
 	},
 	data() {
 		return {
-			url: "https://www.zhongjubang.com/api/",
 			fileList: [],
 			hasChange: false,
 			hasInit: false,
