@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Axios from 'axios'
 import qs from 'qs';
+import '../../global.js';
 
 Vue.prototype.$axios = Axios;
 Vue.use(Router)

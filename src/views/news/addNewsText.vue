@@ -110,7 +110,6 @@ export default {
 	},
 	data() {
 		return {
-			url: "https://www.zhongjubang.com/api/",
 			fileList: [],
 			hasChange: false,
 			hasInit: false,
@@ -260,7 +259,7 @@ export default {
 			+ '(/[0-9a-z_!~*\'().;?:@&=+$,%#-]+)+/?)$'; 
 			var re=new RegExp(strRegex); 
 			//re.api() 
-			if (!re.api(this.temp.url)) { 
+			if (!re.test(this.temp.url)) { 
 				this.$message.error('你输入的地址无效'); 
 				return false;
 			} 
@@ -272,7 +271,7 @@ export default {
 			this.$refs["dataForm"].validate(valid => {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-					var url = this.url;
+					// var url = this.url;
 					console.log(this.fileList.name)
 					console.log(this.temp.newsTypeId)
 					// 新闻内容和新闻链接二选一
@@ -298,7 +297,7 @@ export default {
 						newsTypeId: this.temp.newsTypeId,
 						url: this.temp.url
 					}
-					
+					console.log(url)
 					this.Axios.post(url + "/admin/offcial/addnews", params)
 						.then(res => {
 							if(res.data.code == 200) {

@@ -55,7 +55,6 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import https from "../../../https.js"; // 注意用自己的路径
-import '../../../global.js'; //引入全局url
 // import Tinymce from "/components/Tinymce"
 // import Tinymce from 'components/Tinymce'
 export default {
@@ -76,7 +75,7 @@ export default {
 	},
 	// 获取新闻数据
 	mounted() {
-		this.getInput();
+		// this.getInput();
 		this.getInfo();
 	},
 	methods: {
@@ -134,10 +133,10 @@ export default {
 					}
 				});
 		},
-		getInput() {
-			const item = this.textarea2;
-			console.log(item)
-		},
+		// getInput() {
+		// 	const item = this.textarea2;
+		// 	console.log(item)
+		// },
 		// 删除整条品牌数据
 		deleteBrand(id) {
 			this.$confirm("此操作将永久删除, 是否继续?", "提示", {

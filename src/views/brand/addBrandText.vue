@@ -198,19 +198,21 @@ export default {
 		
         // 品牌图
 		getfileName(file, fileList) {
-			this.fileList.name = fileList.name
+			// this.fileList.name = fileList.name
 		},
         // 品牌图标
         getlogfileName(file, fileList) {
-            this.logfileList.name = fileList.name
+            // this.logfileList.name = fileList.name
         },
 		uploadSuccess(response, file, fileList) {
 			if(response.code == 200) {
+				console.log(response.data.fileName)
 				this.fileList.name = response.data.fileName;
 			}
 		},
 		uploadSuccessLog(response, file, logfileList) {
 			if(response.code == 200) {
+				console.log(response.data.fileName)
 				this.logfileList.name = response.data.fileName;
 			}
 		},
@@ -276,9 +278,9 @@ export default {
 			this.$refs["dataForm"].validate(valid => {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-					var url = this.url;
+					
 					// console.log(this.logfileList.name)
-					// console.log(this.fileList.name)
+					console.log(this.fileList.name)
 					// 判断新闻内容是否为空
 					if(this.value == '') {
 						 this.$message.error('请填写品牌详情');
@@ -292,6 +294,8 @@ export default {
 						this.$message.error('请上传品牌图标');
 						return;
 					}
+					console.log(this.logfileList.name)
+					console.log(this.fileList.name)
                     var params = {
                         brandDetails: this.value,
                         brandImg: this.logfileList.name,
