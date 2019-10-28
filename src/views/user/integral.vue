@@ -8,6 +8,7 @@
 				<el-table-column prop="phone" label="手机号" ></el-table-column>
 				<el-table-column prop="integralLog" label="积分日志" ></el-table-column>
 				<el-table-column prop="integralValue" label="积分值" ></el-table-column>
+				<el-table-column prop="createTime" label="创建日期" ></el-table-column>
 			</el-table>
 			<!--渲染数据 end-->
 
@@ -28,6 +29,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import https from "../../../https.js"; // 注意用自己的路径
+import '../../../global.js'; //引入全局url
 // import Tinymce from "/components/Tinymce"
 // import Tinymce from 'components/Tinymce'
 export default {
@@ -61,7 +63,7 @@ export default {
 			this.getInfo()
 		},
 		getInfo() {
-			const url = "https://www.zhongjubang.com/api/";
+			
 			var parmas = {
 				newsType: this.newsType,
 				pageIndex: this.pageIndex,

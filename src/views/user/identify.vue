@@ -84,6 +84,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import https from "../../../https.js"; // 注意用自己的路径
+import '../../../global.js'; //引入全局url
 
 
 export default {
@@ -168,7 +169,7 @@ export default {
 			}
 		},
 		getInfo() {
-			const url = "https://www.zhongjubang.com/api/";
+			
 			
 			var parmas = {
 				pageIndex: this.pageIndex,
@@ -224,7 +225,7 @@ export default {
 		sendData(){
             console.log(this.userId)
             console.log(this.temp.state)
-            const url = "https://www.zhongjubang.com/api/";
+            
 			var parmas = {
 				state: this.temp.state,
                 userId: this.userId

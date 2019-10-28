@@ -63,6 +63,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import https from "../../../https.js"; // 注意用自己的路径
+import '../../../global.js'; //引入全局url
 
 export default {
 	name: "alipay",
@@ -127,7 +128,6 @@ export default {
             })
         },
 		getInfo() {
-			const url = "https://www.zhongjubang.com/api/";
 			
 			var parmas = {
 				type: 1,
@@ -175,7 +175,6 @@ export default {
 			const item = this.textarea2;
 		},
 		sendData(){
-            const url = "https://www.zhongjubang.com/api/";
 			var parmas = {
 				state: this.temp.state,
                 userWithdrawId: this.userwithdrawId

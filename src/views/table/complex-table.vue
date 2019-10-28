@@ -70,6 +70,7 @@ import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 import https from "../../../https.js"; // 注意用自己的路径
+import '../../../global.js'; //引入全局url
 // import Tinymce from "/components/Tinymce"
 // import Tinymce from 'components/Tinymce'
 export default {
@@ -149,7 +150,6 @@ export default {
 			this.getInfo()
 		},
 		getInfo() {
-			const url = "https://www.zhongjubang.com/api/";
 			
 			let parmas = {
 				newsType: this.newsType,
@@ -204,7 +204,6 @@ export default {
 				cancelButtonText: "取消",
 				type: "warning"
 			}).then(() => {
-				const url = "http://www.zhongjubang.com/api/";
 				this.Axios.post(url + "/admin/offcial/delnews", {
 					newsId: row.newsId
 				}).then(res => {

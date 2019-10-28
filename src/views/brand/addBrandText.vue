@@ -67,6 +67,7 @@ import load from "../../components/Tinymce/dynamicLoadScript";
 // import { fetchList } from "@/api/article";
 import axios from 'axios';
 import Qs from 'qs';
+import '../../../global.js'; //引入全局url
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
 const tinymceCDN =
@@ -116,7 +117,6 @@ export default {
 	
 	data() {
 		return {
-			url: "https://www.zhongjubang.com/api/",
 			fileList: [],
 			logfileList: [],
 			hasChange: false,

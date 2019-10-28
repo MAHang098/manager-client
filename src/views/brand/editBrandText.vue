@@ -65,6 +65,7 @@ import toolbar from "../../components/Tinymce/toolbar";
 import load from "../../components/Tinymce/dynamicLoadScript";
 // import { fetchList } from "@/api/article";
 import axios from 'axios';
+import '../../../global.js'; //引入全局url
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
 const tinymceCDN =
@@ -114,7 +115,6 @@ export default {
 	
 	data() {
 		return {
-			url: "https://www.zhongjubang.com/api/",
 			fileList: [],  // 品牌图数组
 			logfileList: [], // 品牌图标数组
 			brandId: '',  // 品牌id
@@ -319,7 +319,7 @@ export default {
 			this.$refs["dataForm"].validate(valid => {
 				if (valid) {
 					// this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-					var url = this.url;
+				
 					
 					// 判断新闻内容是否为空
 					if(this.value == '') {
