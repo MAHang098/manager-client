@@ -177,8 +177,8 @@ export default {
 			this.loading = true;
 			this.Axios.post(url + "/admin/applet/getuserIdcard", parmas)
 				.then(res => {
-					if (res.status == 200) {
-						this.loading = false;
+					this.loading = false;
+					if (res.data.code == 200) {
 						const tableData = res.data.data.dataList;
 						this.tableData = tableData;
 						this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
