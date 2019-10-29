@@ -91,12 +91,12 @@ export default {
 				contacts: [{ required: true, message: '请输入联系人', trigger: 'blur' }] ,
 				phone:  [{ required: true, message: '请输入手机号', trigger: 'blur' }],
 				sex:  [{ required: true, message: '请输入性别', trigger: 'change' }],
-				shelfTime:  [{ type: 'date', required: true, message: '请选择上架时间', trigger: 'blur' }],
+				shelfTime:  [{ required: true, message: '请选择上架时间', trigger: 'blur' }],
 				region:  [{ required: true, message: '请输入地区', trigger: 'blur' }],
 				budget:  [{ required: true, message: '请输入预算', trigger: 'blur' }],
 				apartment:  [{ required: true, message: '请输入户型', trigger: 'blur' }],
 				preOrderedProducts:  [{ required: true, message: '请输入预购产品', trigger: 'blur' }],
-				preorderTime:  [{ type: 'date', required: true, message: '请输入预购时间', trigger: 'blur' }],
+				preorderTime:  [{  required: true, message: '请输入预购时间', trigger: 'blur' }],
 				intentionBrand:  [{ required: true, message: '请输入意向品牌', trigger: 'blur' }],
 				decorationStyle:  [{ required: true, message: '请输入装修风格', trigger: 'blur' }],
 				remarks:  [{ required: true, message: '请输入备注', trigger: 'blur' }]
@@ -148,8 +148,9 @@ export default {
 
             let times=d.getFullYear() + '-' + month + '-' + day + ' ' + hours + ':' + min + ':' + sec;
             
-             if(typeof times == 'string' && this.queryId) {
-                 return  new Date(times);
+            if(typeof times == 'string' && this.queryId) {
+                times=d.getFullYear() + '-' + month + '-' + day + ' 00:00:00' ;
+                return  times;
             }
             return times;
         },
@@ -162,7 +163,7 @@ export default {
                     return false;
                 }
                 let params = this.formData;
-                params.preorderTime = this.resolvingDate(this.formData.preorderTime);
+               params.preorderTime = this.resolvingDate(this.formData.preorderTime);
                 params.shelfTime = this.resolvingDate(this.formData.shelfTime);
                 // 编辑抢单
                 if(this.queryId) {
@@ -182,6 +183,7 @@ export default {
                         })
                 } else {
                     // 添加抢单
+                    
                     this.Axios.post(url + "/admin/applet/addgrabsheet",params)
                         .then(res => {
                             if(res.data.code == 200) {
