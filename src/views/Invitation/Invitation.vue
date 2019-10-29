@@ -9,9 +9,9 @@
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading" >
 				<el-table-column prop="tpUserId" label="用户id" ></el-table-column>
 				<el-table-column prop="pid" label="邀请人id" ></el-table-column>
-				<el-table-column prop="nviteNickName" label="邀请人昵称昵称" ></el-table-column>
+				<el-table-column prop="nviteNickName" label="邀请人昵称" ></el-table-column>
 				<el-table-column prop="createTime" label="创建时间" ></el-table-column>
-				<el-table-column prop="coverNickName" label="被邀请时间" ></el-table-column>
+				<el-table-column prop="coverNickName" label="被邀请人昵称" ></el-table-column>
 				<el-table-column prop="businessCardCheckStatus" label="状态" :formatter="auditAtatus"></el-table-column>
 			</el-table>
 			<!--渲染数据 end-->
