@@ -4,11 +4,11 @@
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px; display: none">
       <line-chart :chart-data="lineChartData" />
     </el-row>
 
-    <el-row :gutter="32">
+    <el-row :gutter="32" style="display: none">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <raddar-chart />
@@ -123,5 +123,9 @@ export default {
 }
 .github-corner {
   display: none;
+}
+// 折线图
+.el-row {
+  // display: none
 }
 </style>
