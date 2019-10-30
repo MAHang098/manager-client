@@ -1,10 +1,10 @@
 <template>
 	<div class="app-container">
 		<div class="filter-container">
-            <div class="demo-input-size">
-				<el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="userId"  @keyup.enter.native="handleClick" clearable class="elInput"></el-input>
+            <!-- <div class="demo-input-size">
+				<el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="userId"  @keyup.enter.native="handleClick" clearable class="elInput" @clear="clearInput"></el-input>
 				<el-button  style="margin-left: 10px;" type="primary"  icon="el-icon-search"  @click="handleClick">搜索</el-button>
-			</div>
+			</div> -->
 
             <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="addGrab">添加抢单</el-button>
 			<!--渲染数据 start-->
@@ -78,6 +78,11 @@ export default {
 	methods: {
         handleClick() {
             this.getInfo();
+		},
+		// 输入框点击清楚按钮
+        clearInput() {
+            this.search = this.searchInput;
+			this.getInfo();
         },
 		// 修改每页条数
 		handleSizeChange(val) {

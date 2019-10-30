@@ -71,7 +71,7 @@ export default {
 		return {
 			newsType: "applet_news",
 			pageIndex: 1,
-			pageSize: 20,
+			pageSize: 10,
 			search: "",
 			tableData: [],
 			state: "",
@@ -113,7 +113,6 @@ export default {
 			this.getInfo()
 		},
 		cashState(row) {
-			console.log(row.state)
 			if(row.state == 0) {
 				return '未审核冻结中'
 			} else {

@@ -72,10 +72,9 @@ export default {
 			this.search = this.searchInput;
 			this.getInfo();
         },
+		// 输入框点击清楚按钮
         clearInput() {
             this.search = this.searchInput;
-            // console.log(this.searchInput)
-            // this.search = this.searchInput;
 			this.getInfo();
         },
 		// 修改每页条数

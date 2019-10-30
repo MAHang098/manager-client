@@ -62,7 +62,7 @@ export default {
 	data() {
 		return {
 			loading: true,
-			
+			states: [],
 			pageIndex: 1,
 			pageSize: 10,
 			search: "",
@@ -98,7 +98,6 @@ export default {
 			this.getInfo()
 		},
 		vipState(row) {
-			console.log(row.state)
 			if(row.state == 0) {
 				return '没付款'
 			} else {
@@ -156,10 +155,8 @@ export default {
         },
 		getInput() {
 			const item = this.textarea2;
-			console.log(item);
 		},
 		handleUpdate(row) {
-            console.log(row.tpRecommendId)
             this.tpRecommendId = row.tpRecommendId
             this.dialogFormVisible = true
             this.$nextTick(() => {
@@ -167,7 +164,6 @@ export default {
             })
         },
         sendData(){
-            console.log(this.tpRecommendId)
 			var parmas = {
 				state: this.temp.state,
                 tpRecommendId: this.tpRecommendId,
@@ -182,7 +178,6 @@ export default {
 						// const tableData = res.data.data.dataList;
 						// this.tableData = tableData;
                         // this.pageTotal = res.data.data.pageSize * res.data.data.totalPage;
-                        console.log('上传成功')
 						this.dialogFormVisible = false
                         this.$notify({
                             title: '成功',

@@ -1,10 +1,10 @@
 <template>
 	<div class="app-container">
 		<div class="filter-container">
-            <div class="demo-input-size">
+            <!-- <div class="demo-input-size">
 				<el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="userId"  @keyup.enter.native="handleClick" clearable class="elInput"></el-input>
 				<el-button  style="margin-left: 10px;" type="primary"  icon="el-icon-search"  @click="handleClick">搜索</el-button>
-			</div>
+			</div> -->
 			<!--渲染数据 start-->
 			<el-table :data="tableData" border style="width: 100%" class="taba" v-loading="loading" >
 				<el-table-column prop="tpUserId" label="用户id" ></el-table-column>
