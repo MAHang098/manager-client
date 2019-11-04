@@ -177,7 +177,6 @@ export default {
                     this.$message.error('请输入正确的电话号码！');
                     return;
                 }
-                return;
                 // 编辑抢单
                 if(this.queryId) {
                     params.grabSheetId = this.queryId;
