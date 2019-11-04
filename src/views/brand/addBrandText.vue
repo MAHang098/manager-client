@@ -44,7 +44,7 @@
 			<el-form-item label="品牌分成" prop="brandRoyalty">
 				<el-input v-model="temp.brandRoyalty" />
 			</el-form-item>
-			<el-form-item label="品牌类型id" prop="brandTypeId">
+			<el-form-item label="品牌类型" prop="brandTypeId">
 				<!-- <el-input v-model="temp.brandTypeId" /> -->
 				<el-select v-model="temp.brandTypeId" placeholder="请选择品牌类型"  :loading="brandLoading">
 					<el-option v-for="item in options" :key="item.id" :label="item.typeName" :value="item.id">

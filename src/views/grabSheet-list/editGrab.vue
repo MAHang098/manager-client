@@ -10,7 +10,7 @@
                 </el-col>
                <el-col :span="8">
                     <el-form-item label="手机号" prop="phone">
-                        <el-input v-model="formData.phone" />
+                        <el-input v-model="formData.phone" maxlength="11" minlength="11"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -154,7 +154,15 @@ export default {
             }
             return times;
         },
-
+        // 验证电话号码
+        isPoneAvailable(phone) {
+            var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+            if (!myreg.test(phone)) {
+                return false;
+            } else {
+                return true;
+            }
+        },
 		submitForm() {
            
             this.$refs['formData'].validate((valid) => {
@@ -165,12 +173,17 @@ export default {
                 let params = this.formData;
                params.preorderTime = this.resolvingDate(this.formData.preorderTime);
                 params.shelfTime = this.resolvingDate(this.formData.shelfTime);
+                if(this.isPoneAvailable(params.phone) == false) {
+                    this.$message.error('请输入正确的电话号码！');
+                    return;
+                }
+                return;
                 // 编辑抢单
                 if(this.queryId) {
                     params.grabSheetId = this.queryId;
                     this.Axios.post(url + "/admin/applet/updategrabsheet",params)
                         .then(res => {
-                            console.log(res.data.code);
+                           
                             if(res.data.code == 200) {
                                 this.$notify({
                                   	title: 'Success',

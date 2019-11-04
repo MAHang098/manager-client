@@ -8,7 +8,7 @@ Vue.prototype.$axios = Axios;
 Vue.use(Router)
 
 // Axios.defaults.baseURL = "https://www.zhongjubang.com/test/";
-Axios.defaults.baseURL = "https://www.zhongjubang.com/test/";
+// Axios.defaults.baseURL = "https://www.zhongjubang.com/test/";
 
 /* Layout */
 import Layout from '@/layout'
