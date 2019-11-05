@@ -47,6 +47,9 @@
 					<el-form-item label="返现金额" prop="title">
 						<el-input v-model="temp.cost" />
 					</el-form-item>
+					<el-form-item label="跟进状态" prop="title">
+						<el-input v-model="temp.msg" />
+					</el-form-item>
 					
 				</el-form>
 				<div slot="footer" class="dialog-footer">
@@ -142,7 +145,8 @@ export default {
             dialogFormVisible: false,
             temp: {
 				state: "",
-				cost: ""
+				cost: "",
+				msg: ""
 			},
 
 		};
@@ -256,7 +260,8 @@ export default {
 			var parmas = {
 				state: this.temp.state,
                 tpRecommendId: this.tpRecommendId,
-                cost: this.temp.cost
+                cost: this.temp.cost,
+                msg: this.temp.msg
 			}
 			this.Axios.post(url + "admin/applet/updateuserrecommendstate", parmas)
 				.then(res => {
