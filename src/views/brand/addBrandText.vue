@@ -69,9 +69,7 @@ import plugins from "../../components/Tinymce/plugins";
 import toolbar from "../../components/Tinymce/toolbar";
 import load from "../../components/Tinymce/dynamicLoadScript";
 // import { fetchList } from "@/api/article";
-import axios from 'axios';
-import Qs from 'qs';
-import '../../../global.js'; //引入全局url
+import https from '../../../https.js'
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
 const tinymceCDN =
