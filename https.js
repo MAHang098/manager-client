@@ -32,6 +32,7 @@ axios.interceptors.response.use((res) =>{
 
 //返回一个Promise(发送post请求)
 export function fetchPost(url, params) {
+    params = params || {};
     return new Promise((resolve, reject) => {
         axios.post(url, params)
             .then(response => {

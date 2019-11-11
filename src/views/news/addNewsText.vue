@@ -63,6 +63,8 @@ import load from "../../components/Tinymce/dynamicLoadScript";
 import { fetchList } from "@/api/article";
 import axios from 'axios';
 import Qs from 'qs';
+import fetchPost from '../../../https.js'
+import request from '@/utils/request'
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
 const tinymceCDN =
@@ -260,7 +262,7 @@ export default {
 			var re=new RegExp(strRegex); 
 			//re.api() 
 			if (!re.test(this.temp.url)) { 
-				this.$message.error('你输入的地址无效'); 
+				this.$message.error('你输入的地址无效');
 				return false;
 			} 
 			return true;
@@ -295,6 +297,9 @@ export default {
 						url: this.temp.url
 					}
 					console.log(url)
+					console.log(444444)
+					// request({url : url,method : 'post' ,params:params})
+					// fetchList(params)
 					this.Axios.post(url + "/admin/offcial/addnews", params)
 						.then(res => {
 							if(res.data.code == 200) {
@@ -312,7 +317,6 @@ export default {
 								}
 							} else {
 								this.$message.error('请求失败');
-								
 							}
 						});
 				} else {
