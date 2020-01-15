@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Axios from 'axios'
-import qs from 'qs';
-import '../../global.js';
+import qs from 'qs'
+import '../../global.js'
 
-Vue.prototype.$axios = Axios;
+Vue.prototype.$axios = Axios
 Vue.use(Router)
 
 // Axios.defaults.baseURL = "https://www.zhongjubang.com/test/";
@@ -23,7 +23,8 @@ import brand from './modules/brand' // 品牌管理模块
 import orderRecommand from './modules/orderRecommand' // 订单管理模块
 import cash from './modules/cash' // 订单管理模块
 import grabList from './modules/grabList' // 抢单管理模块
-
+import topicList from './modules/topic' // 话题模块
+import topicTypeRouter from './modules/topicType' // 话题 类型管理
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -72,7 +73,6 @@ export const constantRoutes = [
       }
     }]
   },
-
 
   {
     path: '/redirect',
@@ -124,9 +124,8 @@ export const constantRoutes = [
         icon: 'user',
         noCache: true
       }
-    }, ]
+    }]
   }
-  
 
 ]
 
@@ -135,9 +134,6 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-
-
-
 
   /** when your routing map is too long, you can split it into small modules **/
 
@@ -148,7 +144,8 @@ export const asyncRoutes = [
   orderRecommand,
   cash,
   grabList,
-
+  topicList,
+  topicTypeRouter,
   // {
   //   path: '/tab',
   //   component: Layout,
@@ -162,23 +159,62 @@ export const asyncRoutes = [
   //   ]
   // },
 
-
   {
     path: '/Invitation',
     component: Layout,
     redirect: 'noRedirect',
     name: 'Invitations',
-   
-    children: [{
+
+    children: [
+      {
         path: 'Invitation',
         component: () =>
           import('@/views/Invitation/Invitation'),
         name: 'Invitation',
         meta: {
           title: '邀请订单',
-          icon: 'component',
+          icon: 'component'
         }
-      }]
+      }
+    ]
+  },
+  {
+    path: '/video',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: 'video',
+
+    children: [
+      {
+        path: 'video',
+        component: () =>
+          import('@/views/video/index'),
+        name: 'videoList',
+        meta: {
+          title: '视频列表',
+          icon: 'component'
+        }
+      }
+    ]
+  },
+  {
+    path: '/G-circle',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: 'G_circle',
+
+    children: [
+      {
+        path: 'G-circle',
+        component: () =>
+          import('@/views/G-circle/index'),
+        name: 'G_circleList',
+        meta: {
+          title: '居圈列表',
+          icon: 'component'
+        }
+      }
+    ]
   }
 
 ]
