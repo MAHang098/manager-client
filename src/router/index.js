@@ -25,6 +25,8 @@ import cash from './modules/cash' // 订单管理模块
 import grabList from './modules/grabList' // 抢单管理模块
 import topicList from './modules/topic' // 话题模块
 import topicTypeRouter from './modules/topicType' // 话题 类型管理
+import goodsListRouter from './modules/goods' // 商品模块
+import designationRouter from './modules/designation' // 称号管理
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -146,6 +148,8 @@ export const asyncRoutes = [
   grabList,
   topicList,
   topicTypeRouter,
+  goodsListRouter,
+  designationRouter,
   // {
   //   path: '/tab',
   //   component: Layout,
