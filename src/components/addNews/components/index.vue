@@ -112,7 +112,7 @@ export default {
   },
   data() {
     return {
-      url: "https://www.zhongjubang.com/test/",
+      // url: "https://www.zhongjubang.com/test/",
       fileList: [{name: '', url: ''}],
       hasChange: false,
       hasInit: false,

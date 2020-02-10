@@ -155,7 +155,7 @@ export default {
 			
 			pageTotal: null,
 			currentPage2: 1,
-      url: "https://www.zhongjubang.com/test/"
+    //   url: "https://www.zhongjubang.com/test/"
 		};
 	},
 	// 获取新闻数据

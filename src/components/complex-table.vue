@@ -144,7 +144,7 @@ export default {
 			this.getInfo()
 		},
 		getInfo() {
-			const url = "https://www.zhongjubang.com/test/";
+			// const url = "https://www.zhongjubang.com/test/";
 			// var newsType = this.newsType;
 			// var pageIndex = this.pageIndex;
 			// var pageSize = this.pageSize;

@@ -158,7 +158,7 @@ export default {
 			
 			pageTotal: null,
 			currentPage2: 1,
-      url: "https://www.zhongjubang.com/test/"
+    //   url: "https://www.zhongjubang.com/test/"
 		};
 	},
 	// 获取新闻数据
@@ -232,7 +232,7 @@ export default {
 				state: this.state
 			}
 			this.loading = true;
-			this.Axios.post(this.url + "/controller/shopadmincontroller/getgoodsexaminelist", parmas)
+			this.Axios.post(url + "/controller/shopadmincontroller/getgoodsexaminelist", parmas)
 				.then(res => {
 					this.loading = false;
 					if (res.data.code == 200) {
@@ -258,7 +258,7 @@ export default {
 				pageSize: this.pageSize
 			}
 			this.loading = true;
-			this.Axios.post(this.url + "/controller/shopadmincontroller/getgoodsexaminelist", parmas)
+			this.Axios.post(url + "/controller/shopadmincontroller/getgoodsexaminelist", parmas)
 				.then(res => {
 					this.loading = false;
 					if (res.data.code == 200) {
@@ -302,7 +302,7 @@ export default {
 				state: this.temp.state,
         		goodsExamineId: this.goodsExamineIdchange
 			}
-			this.Axios.post(this.url + "controller/appadmincontroller/updategoodsexaminestate", parmas)
+			this.Axios.post(url + "controller/appadmincontroller/updategoodsexaminestate", parmas)
 				.then(res => {
 					
 
